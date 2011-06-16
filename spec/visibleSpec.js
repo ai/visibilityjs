@@ -17,12 +17,12 @@ describe('Visible', function() {
     })
 
     it('should cache vendor prefix', function() {
-        document.mozVisibilityState = 'visible'
-        expect(Visible._prefix()).toEqual('moz')
+        document.visibilityState = 'visible'
+        expect(Visible._prefix()).toEqual('')
 
-        delete document.mozVisibilityState
+        delete document.visibilityState
         document.webkitVisibilityState = 'visible'
-        expect(Visible._prefix()).toEqual('moz')
+        expect(Visible._prefix()).toEqual('')
 
         Visible._chechedPrefix = null
         expect(Visible._prefix()).toEqual('webkit')
@@ -34,5 +34,13 @@ describe('Visible', function() {
         document.webkitVisibilityState = 'visible'
         Visible._chechedPrefix = null
         expect(Visible.support()).toBeTruthy()
+    })
+
+    it('should use properties with vendor prefix', function() {
+        Visible._chechedPrefix = ''
+        expect(Visible._name('hidden')).toEqual('hidden')
+
+        Visible._chechedPrefix = 'webkit'
+        expect(Visible._name('hidden')).toEqual('webkitHidden')
     })
 })
