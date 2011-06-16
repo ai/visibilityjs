@@ -63,4 +63,10 @@ describe('Visible', function () {
         document.webkitHidden = false;
         expect( Visible.hidden() ).toBeFalsy();
     });
+
+    it('should return visibility state', function () {
+        Visible._chechedPrefix = 'webkit';
+        document.webkitVisibilityState = 'visible';
+        expect( Visible.state() ).toEqual('visible');
+    });
 });
