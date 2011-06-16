@@ -13,7 +13,7 @@ task :server do
       { 'spec_dir'  => 'spec' }
     end
     def src_files
-      ['lib/visible.js']
+      ['lib/visibility.js']
     end
   end
 
