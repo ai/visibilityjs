@@ -2,6 +2,7 @@ describe('Visible', function() {
     var document
 
     beforeEach(function() {
+        Visible._chechedPrefix = null
         Visible._doc = document = { }
     })
 
@@ -25,5 +26,13 @@ describe('Visible', function() {
 
         Visible._chechedPrefix = null
         expect(Visible._prefix()).toEqual('webkit')
+    })
+
+    it('should detect Page Visibility support', function() {
+        expect(Visible.support()).toBeFalsy()
+
+        document.webkitVisibilityState = 'visible'
+        Visible._chechedPrefix = null
+        expect(Visible.support()).toBeTruthy()
     })
 })
