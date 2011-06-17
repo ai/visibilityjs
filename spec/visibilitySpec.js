@@ -3,7 +3,10 @@ describe('Visibility', function () {
 
     beforeEach(function () {
         Visibility._chechedPrefix = null;
-        Visibility._doc = document = { };
+        Visibility._listening = false;
+        Visibility._doc = document = {
+            addEventListener: function() { }
+        };
     });
 
     it('should detect, that browser use API without prefix', function () {
@@ -68,5 +71,78 @@ describe('Visibility', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitVisibilityState = 'visible';
         expect( Visibility.state() ).toEqual('visible');
+    });
+
+    it('should set listener only once', function () {
+        Visibility._chechedPrefix = 'webkit';
+        spyOn(document, 'addEventListener');
+
+        Visibility._setListener();
+        Visibility._setListener();
+
+        expect( document.addEventListener ).toHaveBeenCalledWith(
+            'webkitvisibilitychange', jasmine.any(Function), false);
+        expect( document.addEventListener.callCount ).toEqual(1);
+    });
+
+    it('should set listener', function() {
+        Visibility._chechedPrefix = 'webkit';
+        var listener;
+        document.addEventListener = function(a, b, c) {
+            listener = b;
+        };
+        spyOn(Visibility, '_onVisibilityChange').andCallFake(function () {
+            expect( this ).toBe(Visibility);
+        });
+
+        Visibility._setListener();
+        listener();
+
+        expect( Visibility._onVisibilityChange ).toHaveBeenCalled();
+    });
+
+    it('should call onVisible callback now without API support', function () {
+        spyOn(Visibility, 'support').andReturn(false);
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        Visibility.onVisible(callback);
+
+        expect( callback ).toHaveBeenCalled();
+        expect( Visibility._setListener ).not.toHaveBeenCalled();
+    });
+
+    it('should run onVisible callback now, if page is visible', function () {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitHidden = false;
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        Visibility.onVisible(callback);
+
+        expect( callback ).toHaveBeenCalled();
+        expect( Visibility._setListener ).not.toHaveBeenCalled();
+    });
+
+    it('should run onVisible callback by listener on hidden page', function () {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitHidden = true;
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        Visibility.onVisible(callback);
+
+        expect( callback ).not.toHaveBeenCalled();
+        expect( Visibility._setListener ).toHaveBeenCalled();
+
+        Visibility._onVisibilityChange();
+        expect( callback ).not.toHaveBeenCalled();
+
+        document.webkitHidden = false;
+        Visibility._onVisibilityChange();
+        expect( callback ).toHaveBeenCalled();
+
+        Visibility._onVisibilityChange();
+        expect( callback.callCount ).toEqual(1);
     });
 });
