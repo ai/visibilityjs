@@ -4,6 +4,7 @@ describe('Visibility', function () {
     beforeEach(function () {
         Visibility._chechedPrefix = null;
         Visibility._listening = false;
+        Visibility._changeCallbacks = [];
         Visibility._doc = document = {
             addEventListener: function() { }
         };
@@ -99,6 +100,36 @@ describe('Visibility', function () {
         listener();
 
         expect( Visibility._onVisibilityChange ).toHaveBeenCalled();
+    });
+
+    it('should return false on change method without API support', function () {
+        spyOn(Visibility, 'support').andReturn(false);
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        expect( Visibility.change(callback) ).toEqual(false);
+
+        expect( callback ).not.toHaveBeenCalled();
+        expect( Visibility._setListener ).not.toHaveBeenCalled();
+    });
+
+    it('should call callback on visible state shanges', function () {
+        Visibility._chechedPrefix = 'webkit';
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        expect( Visibility.change(callback) ).toEqual(true);
+        expect( Visibility._setListener ).toHaveBeenCalled();
+
+        var event = { };
+        document.webkitVisibilityState = 'visible';
+        Visibility._onVisibilityChange(event);
+        expect( callback ).toHaveBeenCalledWith(event, 'visible');
+
+        document.webkitVisibilityState = 'hidden';
+        Visibility._onVisibilityChange(event);
+        expect( callback.callCount ).toEqual(2);
+        expect( callback.mostRecentCall.args ).toEqual([event, 'hidden']);
     });
 
     it('should call onVisible callback now without API support', function () {
