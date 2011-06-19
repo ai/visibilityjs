@@ -5,6 +5,9 @@ describe('Visibility', function () {
         Visibility._chechedPrefix = null;
         Visibility._listening = false;
         Visibility._changeCallbacks = [];
+        Visibility._lastTimer = 0;
+        Visibility._timers = { };
+        Visibility.__hiddenBefore = false;
         Visibility._doc = document = {
             addEventListener: function() { }
         };
@@ -175,5 +178,148 @@ describe('Visibility', function () {
 
         Visibility._onVisibilityChange();
         expect( callback.callCount ).toEqual(1);
+    });
+
+    it('should call setInterval from internal method', function() {
+        spyOn(window, 'setInterval').andReturn(102);
+        var callback = function() { };
+        expect( Visibility._setInterval(callback, 1000) ).toEqual(102);
+        expect( window.setInterval ).toHaveBeenCalledWith(callback, 1000);
+    });
+
+    it('should put timer from every method', function() {
+        spyOn(Visibility, '_runTimer');
+
+        var callback1 = function() { };
+        var id1 = Visibility.every(1, 10, callback1);
+        expect( Visibility._lastTimer ).toEqual(id1);
+
+        var callback2 = function() { };
+        var id2 = Visibility.every(2, callback2);
+        expect( Visibility._lastTimer ).toEqual(id2);
+
+        var right = { };
+        right[id1] = { interval: 1, hiddenInterval: 10,   callback: callback1 };
+        right[id2] = { interval: 2, hiddenInterval: null, callback: callback2 };
+        expect( Visibility._timers ).toEqual(right);
+
+        expect( Visibility._runTimer.callCount ).toEqual(2);
+        expect( Visibility._runTimer.argsForCall[0] ).toEqual([id1, false]);
+        expect( Visibility._runTimer.argsForCall[1] ).toEqual([id2, false]);
+    });
+
+    it('should execute timers', function() {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitHidden = true;
+        var intervalID = 100;
+        spyOn(Visibility, '_setInterval').andCallFake(function() {
+            return intervalID += 1;
+        });
+        callback1 = jasmine.createSpy().andCallFake(function() {
+            expect( this ).toBe(window);
+        });
+        callback2 = jasmine.createSpy();
+        Visibility._timers = {
+            1: { interval: 1, hiddenInterval: 10,   callback: callback1 },
+            2: { interval: 2, hiddenInterval: null, callback: callback2 }
+        };
+
+        Visibility._runTimer(1, false);
+        expect( Visibility._timers[1].intervalID ).toEqual(101);
+        expect( Visibility._setInterval.callCount ).toEqual(1);
+        expect( Visibility._setInterval.mostRecentCall.args ).
+            toEqual([callback1, 10]);
+        expect( callback1 ).not.toHaveBeenCalled();
+
+        Visibility._runTimer(2, false);
+        expect( Visibility._timers[2].intervalID ).not.toBeDefined();
+        expect( Visibility._setInterval.callCount ).toEqual(1);
+
+        document.webkitHidden = false;
+        Visibility._runTimer(1, true);
+        expect( Visibility._timers[1].intervalID ).toEqual(102);
+        expect( Visibility._setInterval.callCount ).toEqual(2);
+        expect( Visibility._setInterval.mostRecentCall.args ).
+            toEqual([callback1, 1]);
+        expect( callback1 ).toHaveBeenCalled();
+    });
+
+    it('should stop timer', function() {
+        spyOn(window, 'clearInterval');
+        Visibility._timers = {
+            1: {
+                interval:       1,
+                hiddenInterval: 2,
+                callback:       function() { },
+                intervalID:     101
+            },
+        };
+
+        Visibility._stopTimer(1);
+        expect( window.clearInterval ).toHaveBeenCalledWith(101);
+        expect( Visibility._timers[1].intervalID ).not.toBeDefined();
+    });
+
+    it('should remember is page is hidden on loading', function() {
+        Visibility._chechedPrefix = 'webkit';
+
+        document.webkitHidden= true;
+        Visibility._init();
+        expect( Visibility._hiddenBefore ).toBeTruthy();
+
+        document.webkitHidden = false;
+        Visibility._init();
+        expect( Visibility._hiddenBefore ).toBeFalsy();
+    });
+
+    it('should remember is previous state is visible', function () {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitHidden  = true;
+
+        Visibility._onVisibilityChange();
+        expect( Visibility._hiddenBefore ).toBeTruthy();
+
+        document.webkitHidden  = false;
+        Visibility._onVisibilityChange();
+        expect( Visibility._hiddenBefore ).toBeFalsy();
+    });
+
+    it('should stop and run timers on change state', function() {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitHidden  = true;
+        Visibility._hiddenBefore = true;
+        spyOn(Visibility, '_stopTimer');
+        spyOn(Visibility, '_runTimer');
+        callback = jasmine.createSpy();
+        Visibility._timers = {
+            1: { interval: 1, hiddenInterval: 10,   callback: callback },
+            3: { interval: 2, hiddenInterval: null, callback: callback }
+        };
+
+        Visibility._onVisibilityChange();
+        expect( Visibility._stopTimer ).not.toHaveBeenCalled();
+        expect( Visibility._runTimer ).not.toHaveBeenCalled();
+
+        document.webkitHidden = false;
+        Visibility._onVisibilityChange();
+        expect( Visibility._stopTimer.callCount ).toEqual(2);
+        expect( Visibility._stopTimer.argsForCall[0] ).toEqual(['1']);
+        expect( Visibility._stopTimer.argsForCall[1] ).toEqual(['3']);
+        expect( Visibility._runTimer.callCount ).toEqual(2);
+        expect( Visibility._runTimer.argsForCall[0] ).toEqual(['1', true]);
+        expect( Visibility._runTimer.argsForCall[1] ).toEqual(['3', true]);
+
+        Visibility._onVisibilityChange();
+        expect( Visibility._stopTimer.callCount ).toEqual(2);
+        expect( Visibility._runTimer.callCount ).toEqual(2);
+
+        document.webkitHidden = true;
+        Visibility._onVisibilityChange();
+        expect( Visibility._stopTimer.callCount ).toEqual(4);
+        expect( Visibility._stopTimer.argsForCall[2] ).toEqual(['1']);
+        expect( Visibility._stopTimer.argsForCall[3] ).toEqual(['3']);
+        expect( Visibility._runTimer.callCount ).toEqual(4);
+        expect( Visibility._runTimer.argsForCall[2] ).toEqual(['1', false]);
+        expect( Visibility._runTimer.argsForCall[3] ).toEqual(['3', false]);
     });
 });
