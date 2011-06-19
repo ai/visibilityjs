@@ -341,4 +341,49 @@ describe('Visibility', function () {
         expect( Visibility._runTimer.argsForCall[2] ).toEqual(['1', false]);
         expect( Visibility._runTimer.argsForCall[3] ).toEqual(['3', false]);
     });
+
+    it('should run notPrerender callback now without API support', function () {
+        spyOn(Visibility, 'support').andReturn(false);
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        Visibility.notPrerender(callback);
+
+        expect( callback ).toHaveBeenCalled();
+        expect( Visibility._setListener ).not.toHaveBeenCalled();
+    });
+
+    it('should run notPrerender now, if page isn’t prerended', function () {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitVisibilityState = 'hidden';
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        Visibility.notPrerender(callback);
+
+        expect( callback ).toHaveBeenCalled();
+        expect( Visibility._setListener ).not.toHaveBeenCalled();
+    });
+
+    it('should run notPrerender by listener on prerended page', function () {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitVisibilityState = 'prerender';
+        spyOn(Visibility, '_setListener');
+        var callback = jasmine.createSpy();
+
+        Visibility.notPrerender(callback);
+
+        expect( callback ).not.toHaveBeenCalled();
+        expect( Visibility._setListener ).toHaveBeenCalled();
+
+        Visibility._onVisibilityChange();
+        expect( callback ).not.toHaveBeenCalled();
+
+        document.webkitVisibilityState = 'visible';
+        Visibility._onVisibilityChange();
+        expect( callback ).toHaveBeenCalled();
+
+        Visibility._onVisibilityChange();
+        expect( callback.callCount ).toEqual(1);
+    });
 });
