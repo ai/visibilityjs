@@ -11,6 +11,7 @@ describe('Visibility', function () {
         Visibility._doc = document = {
             addEventListener: function() { }
         };
+        delete window.jQuery;
     });
 
     it('should detect, that browser use API without prefix', function () {
@@ -180,21 +181,39 @@ describe('Visibility', function () {
         expect( callback.callCount ).toEqual(1);
     });
 
-    it('should call setInterval from internal method', function() {
+    it('should call system setInterval from internal method', function () {
         spyOn(window, 'setInterval').andReturn(102);
-        var callback = function() { };
-        expect( Visibility._setInterval(callback, 1000) ).toEqual(102);
+        var callback = function () { };
+        expect( Visibility._originalSetInterval(callback, 1000) ).toEqual(102);
         expect( window.setInterval ).toHaveBeenCalledWith(callback, 1000);
     });
 
-    it('should put timer from every method', function() {
+    it('should call jQuery Chrono plugin from internal method', function () {
+        window.jQuery = { };
+        jQuery.every = jasmine.createSpy().andReturn(102);
+        var callback = function () { };
+        expect( Visibility._chronoSetInterval(callback, '1 sec') ).toEqual(102);
+        expect( jQuery.every ).toHaveBeenCalledWith('1 sec', callback);
+    });
+
+    it('should autodelect function to _setInterval', function () {
+        Visibility._init();
+        expect( Visibility._setInterval ).toBe(Visibility._originalSetInterval);
+
+        window.jQuery = { };
+        jQuery.every = function () { };
+        Visibility._init();
+        expect( Visibility._setInterval ).toBe(Visibility._chronoSetInterval);
+    });
+
+    it('should put timer from every method', function () {
         spyOn(Visibility, '_runTimer');
 
-        var callback1 = function() { };
+        var callback1 = function () { };
         var id1 = Visibility.every(1, 10, callback1);
         expect( Visibility._lastTimer ).toEqual(id1);
 
-        var callback2 = function() { };
+        var callback2 = function () { };
         var id2 = Visibility.every(2, callback2);
         expect( Visibility._lastTimer ).toEqual(id2);
 
@@ -208,14 +227,14 @@ describe('Visibility', function () {
         expect( Visibility._runTimer.argsForCall[1] ).toEqual([id2, false]);
     });
 
-    it('should execute timers', function() {
+    it('should execute timers', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden = true;
         var intervalID = 100;
-        spyOn(Visibility, '_setInterval').andCallFake(function() {
+        spyOn(Visibility, '_setInterval').andCallFake(function () {
             return intervalID += 1;
         });
-        callback1 = jasmine.createSpy().andCallFake(function() {
+        callback1 = jasmine.createSpy().andCallFake(function () {
             expect( this ).toBe(window);
         });
         callback2 = jasmine.createSpy();
@@ -244,13 +263,13 @@ describe('Visibility', function () {
         expect( callback1 ).toHaveBeenCalled();
     });
 
-    it('should stop timer', function() {
+    it('should stop timer', function () {
         spyOn(window, 'clearInterval');
         Visibility._timers = {
             1: {
                 interval:       1,
                 hiddenInterval: 2,
-                callback:       function() { },
+                callback:       function () { },
                 intervalID:     101
             },
         };
@@ -260,7 +279,7 @@ describe('Visibility', function () {
         expect( Visibility._timers[1].intervalID ).not.toBeDefined();
     });
 
-    it('should remember is page is hidden on loading', function() {
+    it('should remember is page is hidden on loading', function () {
         Visibility._chechedPrefix = 'webkit';
 
         document.webkitHidden= true;
@@ -284,7 +303,7 @@ describe('Visibility', function () {
         expect( Visibility._hiddenBefore ).toBeFalsy();
     });
 
-    it('should stop and run timers on change state', function() {
+    it('should stop and run timers on change state', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden  = true;
         Visibility._hiddenBefore = true;
