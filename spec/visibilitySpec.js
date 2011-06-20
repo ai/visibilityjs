@@ -208,6 +208,7 @@ describe('Visibility', function () {
 
     it('should put timer from every method', function () {
         spyOn(Visibility, '_runTimer');
+        spyOn(Visibility, '_setListener');
 
         var callback1 = function () { };
         var id1 = Visibility.every(1, 10, callback1);
@@ -225,6 +226,8 @@ describe('Visibility', function () {
         expect( Visibility._runTimer.callCount ).toEqual(2);
         expect( Visibility._runTimer.argsForCall[0] ).toEqual([id1, false]);
         expect( Visibility._runTimer.argsForCall[1] ).toEqual([id2, false]);
+
+        expect( Visibility._setListener ).toHaveBeenCalled();
     });
 
     it('should execute timers', function () {
