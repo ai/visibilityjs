@@ -1,12 +1,10 @@
 # Visibility.js – sugar for Page Visibility API
 
-Visibility.js allow you to know, that your web page is in the background tab and
-thus not visible to the user. So you can disable some timers or AJAX requests to
-save browser performance.
-
-The main benefits from Visibility.js is a performance (disable unnecessary
-computation) and careful usability (for example, you can stop video
-or slideshow, when user switch tab to answer for urgent email).
+Visibility.js allow you to know, that your web page is visible to the user or
+hidden in background tab or prerendering. It allow you to depend JS logic on
+page visibility state and save browser performance (disable unnecessary timers
+and AJAX requests) or create careful UI (for example, you can stop video or
+slideshow, when user switch tab to answer for urgent email).
 
 Also you can detect, that browser just [prerendering] page, and don’t count
 visitor (before user will not really click on estimated link) or run heavy
@@ -198,6 +196,39 @@ Visibility.change(function(e, state) {
     Statistics.visibilityChange(state);
 });
 ```
+
+## Install
+
+### Rails 3.1
+
+In Rails 3.1 (or another project with Sprockets 2) just add `visibility` to
+`Gemfile`:
+
+```ruby
+gem 'visibility'
+```
+
+and add require to `app/assets/javascripts/application.js.coffee`:
+
+```coffee
+#= require "visibility"
+```
+
+### Jammit
+
+If you use Jammit or another package manager just copy `lib/visibility.js` to
+`public/javascripts/lib` in your project and add library to `config/assets.yml`:
+
+```yaml
+javascripts:
+  application:
+    - public/javascripts/lib/visibility.js
+```
+
+### Other
+
+If you didn’t use Rails 3.1 or assets packaging manager you can use already
+minimized version of library at `lib/visibility.min.js`.
 
 ## Contributing
 
