@@ -161,7 +161,8 @@ For example, in prerendering `Visibility.state()` will return `"prerender"`, but
 `Visibility.hidden()` will return `true`.
 
 Lets collect in what state user open our page:
-```
+
+```js
 $(document).load(function () {
 
     if ( 'hidden' == Visibility.state() ) {
