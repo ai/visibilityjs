@@ -207,6 +207,8 @@ describe('Visibility', function () {
     });
 
     it('should put timer from every method', function () {
+        Visibility._chechedPrefix = 'webkit';
+        document.webkitHidden = true;
         spyOn(Visibility, '_runTimer');
         spyOn(Visibility, '_setListener');
 
@@ -228,6 +230,16 @@ describe('Visibility', function () {
         expect( Visibility._runTimer.argsForCall[1] ).toEqual([id2, false]);
 
         expect( Visibility._setListener ).toHaveBeenCalled();
+    });
+
+    it('should set visible timer from every method without API', function () {
+        spyOn(Visibility, '_setInterval');
+        spyOn(Visibility, '_setListener');
+        var callback = function () { };
+        Visibility.every(1, 10, callback);
+
+        expect( Visibility._setInterval ).toHaveBeenCalledWith(callback, 1)
+        expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
     it('should execute timers', function () {
