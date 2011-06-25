@@ -37,11 +37,19 @@ describe('Visibility', function () {
     });
 
     it('should detect whether the Page Visibility API is supported', function () {
-        expect( Visibility.support() ).toBeFalsy();
+        expect( Visibility.isSupported() ).toBeFalsy();
 
         document.webkitVisibilityState = 'visible';
         Visibility._chechedPrefix = null;
-        expect( Visibility.support() ).toBeTruthy();
+        expect( Visibility.isSupported() ).toBeTruthy();
+    });
+
+    it('should support deprecated .support() method', function() {
+        spyOn(Visibility, 'isSupported');
+
+        Visibility.support();
+
+        expect( Visibility.isSupported ).toHaveBeenCalled();
     });
 
     it('should use properties with vendor prefix', function () {
@@ -357,30 +365,30 @@ describe('Visibility', function () {
         expect( Visibility._runTimer.argsForCall[3] ).toEqual(['3', false]);
     });
 
-    it('should run notPrerender callback immediately if the API is not supported', function () {
+    it('should run afterPrerendering callback immediately if the API is not supported', function () {
         spyOn(Visibility, 'support').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
-        Visibility.notPrerender(callback);
+        Visibility.afterPrerendering(callback);
 
         expect( callback ).toHaveBeenCalled();
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should run notPrerender immediately if page isn’t prerended', function () {
+    it('should run afterPrerendering immediately if page isn’t prerended', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitVisibilityState = 'hidden';
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
-        Visibility.notPrerender(callback);
+        Visibility.afterPrerendering(callback);
 
         expect( callback ).toHaveBeenCalled();
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should run notPrerender listeners on prerended page', function () {
+    it('should run afterPrerendering listeners on prerended page', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitVisibilityState = 'prerender';
         spyOn(Visibility, '_setListener');
@@ -400,5 +408,14 @@ describe('Visibility', function () {
 
         Visibility._onVisibilityChange();
         expect( callback.callCount ).toEqual(1);
+    });
+
+    it('should support deprecated notPrerender method', function () {
+        spyOn(Visibility, 'afterPrerendering');
+
+        var callback = function () {};
+        Visibility.notPrerender( callback );
+
+        expect( Visibility.afterPrerendering ).toHaveBeenCalledWith( callback );
     });
 });
