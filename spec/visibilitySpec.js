@@ -14,7 +14,7 @@ describe('Visibility', function () {
         delete window.jQuery;
     });
 
-    it('should detect, that browser use API without prefix', function () {
+    it('should detect a browser with non-prefixed API', function () {
         document.visibilityState = 'visible';
         expect( Visibility._prefix() ).toEqual('');
     });
@@ -36,12 +36,20 @@ describe('Visibility', function () {
         expect( Visibility._prefix() ).toEqual('webkit');
     });
 
-    it('should detect Page Visibility support', function () {
-        expect( Visibility.support() ).toBeFalsy();
+    it('should detect whether the Page Visibility API is supported', function () {
+        expect( Visibility.isSupported() ).toBeFalsy();
 
         document.webkitVisibilityState = 'visible';
         Visibility._chechedPrefix = null;
-        expect( Visibility.support() ).toBeTruthy();
+        expect( Visibility.isSupported() ).toBeTruthy();
+    });
+
+    it('should support deprecated .support() method', function() {
+        spyOn(Visibility, 'isSupported');
+
+        Visibility.support();
+
+        expect( Visibility.isSupported ).toHaveBeenCalled();
     });
 
     it('should use properties with vendor prefix', function () {
@@ -63,7 +71,7 @@ describe('Visibility', function () {
         expect( Visibility._prop('hidden') ).toEqual(2);
     });
 
-    it('should check, if page is hidden', function () {
+    it('should check if the page is hidden', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden = true;
         expect( Visibility.hidden() ).toBeTruthy();
@@ -106,7 +114,7 @@ describe('Visibility', function () {
         expect( Visibility._onVisibilityChange ).toHaveBeenCalled();
     });
 
-    it('should return false on change method without API support', function () {
+    it('should return false upon calling `change` method when API is not supported', function () {
         spyOn(Visibility, 'support').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
@@ -117,7 +125,7 @@ describe('Visibility', function () {
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should call callback on visible state shanges', function () {
+    it('should call callback on visibility state changes', function () {
         Visibility._chechedPrefix = 'webkit';
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
@@ -136,7 +144,7 @@ describe('Visibility', function () {
         expect( callback.mostRecentCall.args ).toEqual([event, 'hidden']);
     });
 
-    it('should call onVisible callback now without API support', function () {
+    it('should call onVisible callback immediately when API is not supported', function () {
         spyOn(Visibility, 'support').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
@@ -147,7 +155,7 @@ describe('Visibility', function () {
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should run onVisible callback now, if page is visible', function () {
+    it('should run onVisible callback immediately if page is visible', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden = false;
         spyOn(Visibility, '_setListener');
@@ -181,7 +189,7 @@ describe('Visibility', function () {
         expect( callback.callCount ).toEqual(1);
     });
 
-    it('should call system setInterval from internal method', function () {
+    it('should call DOM setInterval from internal method', function () {
         spyOn(window, 'setInterval').andReturn(102);
         var callback = function () { };
         expect( Visibility._originalSetInterval(callback, 1000) ).toEqual(102);
@@ -196,7 +204,7 @@ describe('Visibility', function () {
         expect( jQuery.every ).toHaveBeenCalledWith('1 sec', callback);
     });
 
-    it('should autodelect function to _setInterval', function () {
+    it('should autodetect the function to use as _setInterval', function () {
         Visibility._init();
         expect( Visibility._setInterval ).toBe(Visibility._originalSetInterval);
 
@@ -206,7 +214,7 @@ describe('Visibility', function () {
         expect( Visibility._setInterval ).toBe(Visibility._chronoSetInterval);
     });
 
-    it('should put timer from every method', function () {
+    it('should create a new timer from every method', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden = true;
         spyOn(Visibility, '_runTimer');
@@ -294,7 +302,7 @@ describe('Visibility', function () {
         expect( Visibility._timers[1].intervalID ).not.toBeDefined();
     });
 
-    it('should remember is page is hidden on loading', function () {
+    it('should remember if page is hidden on loading', function () {
         Visibility._chechedPrefix = 'webkit';
 
         document.webkitHidden= true;
@@ -306,7 +314,7 @@ describe('Visibility', function () {
         expect( Visibility._hiddenBefore ).toBeFalsy();
     });
 
-    it('should remember is previous state is visible', function () {
+    it('should remember if previous state is `visible`', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden  = true;
 
@@ -318,7 +326,7 @@ describe('Visibility', function () {
         expect( Visibility._hiddenBefore ).toBeFalsy();
     });
 
-    it('should stop and run timers on change state', function () {
+    it('should stop and run timers on state changes', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden  = true;
         Visibility._hiddenBefore = true;
@@ -357,30 +365,30 @@ describe('Visibility', function () {
         expect( Visibility._runTimer.argsForCall[3] ).toEqual(['3', false]);
     });
 
-    it('should run notPrerender callback now without API support', function () {
+    it('should run afterPrerendering callback immediately if the API is not supported', function () {
         spyOn(Visibility, 'support').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
-        Visibility.notPrerender(callback);
+        Visibility.afterPrerendering(callback);
 
         expect( callback ).toHaveBeenCalled();
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should run notPrerender now, if page isn’t prerended', function () {
+    it('should run afterPrerendering immediately if page isn’t prerended', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitVisibilityState = 'hidden';
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
-        Visibility.notPrerender(callback);
+        Visibility.afterPrerendering(callback);
 
         expect( callback ).toHaveBeenCalled();
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should run notPrerender by listener on prerended page', function () {
+    it('should run afterPrerendering listeners on prerended page', function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitVisibilityState = 'prerender';
         spyOn(Visibility, '_setListener');
@@ -400,5 +408,14 @@ describe('Visibility', function () {
 
         Visibility._onVisibilityChange();
         expect( callback.callCount ).toEqual(1);
+    });
+
+    it('should support deprecated notPrerender method', function () {
+        spyOn(Visibility, 'afterPrerendering');
+
+        var callback = function () {};
+        Visibility.notPrerender( callback );
+
+        expect( Visibility.afterPrerendering ).toHaveBeenCalledWith( callback );
     });
 });
