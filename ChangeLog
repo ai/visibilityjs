@@ -1,0 +1,7 @@
+== 0.2 (Sputnik 2, Laika)
+* Rename support() to isSupported() and notPrerender() to afterPrerendering().
+* Fix IE 6 and 7 support.
+* Documentation fixes by Peter Zotov.
+
+== 0.1 (Sputnik 1, the first)
+* initial release.
