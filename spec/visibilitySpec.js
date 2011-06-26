@@ -44,14 +44,6 @@ describe('Visibility', function () {
         expect( Visibility.isSupported() ).toBeTruthy();
     });
 
-    it('should support deprecated .support() method', function() {
-        spyOn(Visibility, 'isSupported');
-
-        Visibility.support();
-
-        expect( Visibility.isSupported ).toHaveBeenCalled();
-    });
-
     it('should use properties with vendor prefix', function () {
         Visibility._chechedPrefix = '';
         expect( Visibility._name('hidden') ).toEqual('hidden');
@@ -115,7 +107,7 @@ describe('Visibility', function () {
     });
 
     it('should return false upon calling `change` method when API is not supported', function () {
-        spyOn(Visibility, 'support').andReturn(false);
+        spyOn(Visibility, 'isSupported').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
@@ -145,7 +137,7 @@ describe('Visibility', function () {
     });
 
     it('should call onVisible callback immediately when API is not supported', function () {
-        spyOn(Visibility, 'support').andReturn(false);
+        spyOn(Visibility, 'isSupported').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
@@ -366,7 +358,7 @@ describe('Visibility', function () {
     });
 
     it('should run afterPrerendering callback immediately if the API is not supported', function () {
-        spyOn(Visibility, 'support').andReturn(false);
+        spyOn(Visibility, 'isSupported').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
@@ -394,7 +386,7 @@ describe('Visibility', function () {
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
 
-        Visibility.notPrerender(callback);
+        Visibility.afterPrerendering(callback);
 
         expect( callback ).not.toHaveBeenCalled();
         expect( Visibility._setListener ).toHaveBeenCalled();
@@ -408,14 +400,5 @@ describe('Visibility', function () {
 
         Visibility._onVisibilityChange();
         expect( callback.callCount ).toEqual(1);
-    });
-
-    it('should support deprecated notPrerender method', function () {
-        spyOn(Visibility, 'afterPrerendering');
-
-        var callback = function () {};
-        Visibility.notPrerender( callback );
-
-        expect( Visibility.afterPrerendering ).toHaveBeenCalledWith( callback );
     });
 });

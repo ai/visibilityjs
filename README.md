@@ -125,16 +125,16 @@ to do heavy computations or use audio/video tags on the page. So, you may decide
 not run parts of the code while prerendering and wait until the user actually opens
 the link.
 
-You can use `Visibility.notPrerender(callback)` in this cases. For example,
+You can use `Visibility.afterPrerendering(callback)` in this cases. For example,
 this code will only take real visitors (and not page prerenderings) into account:
 
 ```js
-Visibility.notPrerender(function () {
+Visibility.afterPrerendering(function () {
     Statistics.countVisitor();
 });
 ```
 
-If the browser doesn’t support Page Visibility API, `Visibility.notPrerender` will
+If the browser doesn’t support Page Visibility API, `Visibility.afterPrerendering` will
 run `callback` immediately.
 
 ## Low-level API
@@ -142,10 +142,10 @@ run `callback` immediately.
 In some cases you may need more low-level methods. For example, you may want to count
 the time user has viewed the page in foreground and time it has stayed in background.
 
-`Visibility.support()` will return `true` if browser supports the Page Visibility API:
+`Visibility.isSupported()` will return `true` if browser supports the Page Visibility API:
 
 ```js
-if( Visibility.support() ) {
+if( Visibility.isSupported() ) {
     Statistics.startTrackingVisibility();
 }
 ```
