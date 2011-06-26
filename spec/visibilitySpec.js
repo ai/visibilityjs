@@ -36,7 +36,8 @@ describe('Visibility', function () {
         expect( Visibility._prefix() ).toEqual('webkit');
     });
 
-    it('should detect whether the Page Visibility API is supported', function () {
+    it('should detect whether the Page Visibility API is supported',
+            function () {
         expect( Visibility.isSupported() ).toBeFalsy();
 
         document.webkitVisibilityState = 'visible';
@@ -106,7 +107,8 @@ describe('Visibility', function () {
         expect( Visibility._onVisibilityChange ).toHaveBeenCalled();
     });
 
-    it('should return false upon calling `change` method when API is not supported', function () {
+    it('should return false upon calling `change` method when' +
+            ' API is not supported', function () {
         spyOn(Visibility, 'isSupported').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
@@ -136,7 +138,8 @@ describe('Visibility', function () {
         expect( callback.mostRecentCall.args ).toEqual([event, 'hidden']);
     });
 
-    it('should call onVisible callback immediately when API is not supported', function () {
+    it('should call onVisible callback immediately when API is not supported',
+            function () {
         spyOn(Visibility, 'isSupported').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
@@ -147,7 +150,8 @@ describe('Visibility', function () {
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should run onVisible callback immediately if page is visible', function () {
+    it('should run onVisible callback immediately if page is visible',
+            function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitHidden = false;
         spyOn(Visibility, '_setListener');
@@ -357,7 +361,8 @@ describe('Visibility', function () {
         expect( Visibility._runTimer.argsForCall[3] ).toEqual(['3', false]);
     });
 
-    it('should run afterPrerendering callback immediately if the API is not supported', function () {
+    it('should run afterPrerendering callback immediately' +
+            ' if the API is not supported', function () {
         spyOn(Visibility, 'isSupported').andReturn(false);
         spyOn(Visibility, '_setListener');
         var callback = jasmine.createSpy();
@@ -368,7 +373,8 @@ describe('Visibility', function () {
         expect( Visibility._setListener ).not.toHaveBeenCalled();
     });
 
-    it('should run afterPrerendering immediately if page isn’t prerended', function () {
+    it('should run afterPrerendering immediately if page isn’t prerended',
+            function () {
         Visibility._chechedPrefix = 'webkit';
         document.webkitVisibilityState = 'hidden';
         spyOn(Visibility, '_setListener');
