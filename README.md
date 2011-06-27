@@ -120,7 +120,7 @@ run the `callback` immediately.
 ### Wait until the page is opened after prerendering
 
 A web developer can hint a browser (using Prerendering API) that an user is
-likely to click on some link (i.e. on a "Next" link in a multi-page article),
+likely to click on some link (i.e. on a “Next” link in a multi-page article),
 and the browser then may prefetch and prerender the page, so that the user will
 not wait after actually going via the like.
 
