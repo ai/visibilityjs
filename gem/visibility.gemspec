@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 
 Gem::Specification.new do |s|
   s.name        = 'visibility'
@@ -16,6 +16,9 @@ Gem::Specification.new do |s|
   
   s.add_dependency 'sprockets', '>= 2.0.0.beta.5'
 
-  s.files            = Dir.glob('vendor/**/*') + %w(LICENSE README.md ChangeLog)
-  s.extra_rdoc_files = %w(LICENSE README.md)
+  s.files            = ['vendor/assets/javascripts/visibility.js',
+                        'lib/visibility/engine.rb',
+                        'LICENSE', 'README.md', 'ChangeLog']
+  s.extra_rdoc_files = ['LICENSE', 'README.md']
+  s.require_path     = 'lib'
 end
