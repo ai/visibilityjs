@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 Gem::Specification.new do |s|
-  s.name        = 'visibility'
+  s.name        = 'visibilityjs'
   s.version     = '0.2'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Andrey “A.I.” Sitnik']
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'sprockets', '>= 2.0.0.beta.5'
 
   s.files            = ['vendor/assets/javascripts/visibility.js',
-                        'lib/visibility/engine.rb',
+                        'lib/visibilityjs/engine.rb',
                         'LICENSE', 'README.md', 'ChangeLog']
   s.extra_rdoc_files = ['LICENSE', 'README.md']
   s.require_path     = 'lib'

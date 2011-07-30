@@ -207,17 +207,16 @@ Visibility.change(function (e, state) {
 
 ### Rails 3.1
 
-In Rails 3.1 (or another framework with Sprockets 2) just add `visibility` gem
-to `Gemfile`:
+In Rails 3.1 just add `visibilityjs` gem to `Gemfile`:
 
 ```ruby
-gem 'visibility'
+gem 'visibilityjs'
 ```
 
 and require it in `app/assets/javascripts/application.js.coffee`:
 
 ```coffee
-#= require "visibility"
+#= require visibility
 ```
 
 ### Jammit
