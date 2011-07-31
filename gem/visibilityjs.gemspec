@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'sprockets', '>= 2.0.0.beta.5'
 
   s.files            = ['vendor/assets/javascripts/visibility.js',
-                        'lib/visibilityjs.rb', 'lib/visibilityjs/engine.rb',
+                        'lib/visibilityjs.rb',
                         'LICENSE', 'README.md', 'ChangeLog']
   s.extra_rdoc_files = ['LICENSE', 'README.md', 'ChangeLog']
   s.require_path     = 'lib'
