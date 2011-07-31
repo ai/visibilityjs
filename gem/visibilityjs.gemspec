@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'visibilityjs'
-  s.version     = '0.2'
+  s.version     = '0.3'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Andrey “A.I.” Sitnik']
   s.email       = ['andrey@sitnik.ru']
