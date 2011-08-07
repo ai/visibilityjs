@@ -22,12 +22,12 @@ assume that the page is visible all the time, and your logic will still work
 correctly, albeit less effective in some cases.
 
 Page Visibility API is natively supported by Google Chrome and IE 10. You can
-add support to Firefox 5 by [mozvisibility] hack (include it before
+add support to Firefox 5 by [MozVisibility] hack (include it before
 Visibility.js).
 
 [Page Visibility API]: http://www.w3.org/TR/2011/WD-page-visibility-20110602/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
-[mozvisibility]:       https://github.com/private-face/mozvisibility
+[MozVisibility]:       https://github.com/private-face/mozvisibility
 
 ## States
 
