@@ -86,7 +86,7 @@ function. It cannot be passed to `clearInterval`, through, and you should use
 `Visibility.stop(id)` to stop the timer.
 
 ```js
-slideshow = Visibility.every(5 * 1000, function () {
+var slideshow = Visibility.every(5 * 1000, function () {
     nextSlide();
 });
 
