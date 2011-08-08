@@ -29,6 +29,10 @@ Visibility.js).
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
 [MozVisibility]:       https://github.com/private-face/mozvisibility
 
+## Translations
+
+Документация на русском: [http://habrahabr.ru/blogs/javascript/125833/]
+
 ## States
 
 Currently the Page Visibility API supports three visibility states:
