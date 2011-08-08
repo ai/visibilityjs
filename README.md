@@ -31,7 +31,7 @@ Visibility.js).
 
 ## Translations
 
-Документация на русском: [http://habrahabr.ru/blogs/javascript/125833/]
+Документация на русском: <http://habrahabr.ru/blogs/javascript/125833/>
 
 ## States
 
