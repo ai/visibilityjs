@@ -246,6 +246,11 @@ If you don’t use Rails 3.1 or assets packaging manager you can use an already
 minified version of the library, located in repository as
 `lib/visibility.min.js`.
 
+## Alternatives
+
+If you need smaller and simpler wrapper (for example, just to hide vendor
+prefixes), you can use [visibly.js](https://github.com/addyosmani/visibly.js).
+
 ## Contributing
 
 To run project tests and minimize source you’ll need to have Ruby and Bundler
