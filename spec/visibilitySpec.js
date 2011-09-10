@@ -107,6 +107,16 @@ describe('Visibility', function () {
         expect( Visibility._onVisibilityChange ).toHaveBeenCalled();
     });
 
+    it('should set listener in IE', function () {
+        Visibility._chechedPrefix = 'ms';
+        Visibility._doc = document = { attachEvent: function() { } };
+        spyOn(document, 'attachEvent');
+
+        Visibility._setListener();
+
+        expect( document.attachEvent ).toHaveBeenCalled();
+    });
+
     it('should return false upon calling `change` method when' +
             ' API is not supported', function () {
         spyOn(Visibility, 'isSupported').andReturn(false);

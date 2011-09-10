@@ -4,12 +4,12 @@ root = Pathname(__FILE__).dirname
 desc 'Create minimized version of library'
 task :min do
   require 'uglifier'
-
   lib = root.join('lib')
-  js  = File.read(lib + 'visibility.js')
-
-  File.open(lib + 'visibility.min.js', 'w') do |file|
-    file << Uglifier.new(:copyright => false).compile(js)
+  %w(visibility visibility.fallback).each do |name|
+    js = File.read(lib + "#{name}.js")
+    File.open(lib + "#{name}.min.js", 'w') do |file|
+      file << Uglifier.new(:copyright => false).compile(js)
+    end
   end
 end
 
@@ -40,7 +40,8 @@ docs = %w(LICENSE README.md ChangeLog)
 directory 'gem/vendor/assets/javascripts/'
 
 task :copy_vendor => 'gem/vendor/assets/javascripts/' do
-  cp 'lib/visibility.js', 'gem/vendor/assets/javascripts/'
+  cp 'lib/visibility.js',          'gem/vendor/assets/javascripts/'
+  cp 'lib/visibility.fallback.js', 'gem/vendor/assets/javascripts/'
 end
 
 task :copy_docs do

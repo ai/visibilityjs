@@ -13,10 +13,11 @@ Gem::Specification.new do |s|
                   'background tab or is prerendering. It allows you use ' +
                   'the page visibility state in JavaScript logic and improve ' +
                   'browser performance or improve user interface experience.'
-  
+
   s.add_dependency 'sprockets', '>= 2.0.0.beta.5'
 
   s.files            = ['vendor/assets/javascripts/visibility.js',
+                        'vendor/assets/javascripts/visibility.fallback.js',
                         'lib/visibilityjs.rb',
                         'LICENSE', 'README.md', 'ChangeLog']
   s.extra_rdoc_files = ['LICENSE', 'README.md', 'ChangeLog']
