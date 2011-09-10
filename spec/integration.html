@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title></title>
+        <script src="../lib/visibility.js"></script>
+    </head>
+    <body>
+        <h1>Visibility.js test</h1>
+        <p>Page Visibility API <strong id="support"></strong>.</p>
+        <p>Page is visible for <strong id="counter"></strong> sec.</p>
+        <script>
+            var support = document.getElementById('support');
+            if ( Visibility.isSupported() ) {
+                support.innerHTML = 'is supported';
+            } else {
+                support.innerHTML = 'isn’t supported';
+            }
+
+            var title = document.getElementsByTagName('title')[0]
+            title.innerHTML = Visibility.state();
+            Visibility.change(function (e, state) {
+                title.innerHTML = state;
+            });
+
+            var sec = 0;
+            var counter = document.getElementById('counter');
+            Visibility.every(1000, function () {
+                counter.innerHTML = sec++;
+            });
+        </script>
+    </body>
+</html>
