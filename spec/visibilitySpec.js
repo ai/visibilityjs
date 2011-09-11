@@ -9,7 +9,7 @@ describe('Visibility', function () {
         Visibility._timers = { };
         Visibility.__hiddenBefore = false;
         Visibility._doc = document = {
-            addEventListener: function() { }
+            addEventListener: function () { }
         };
         delete window.jQuery;
     });
@@ -91,10 +91,10 @@ describe('Visibility', function () {
         expect( document.addEventListener.callCount ).toEqual(1);
     });
 
-    it('should set listener', function() {
+    it('should set listener', function () {
         Visibility._chechedPrefix = 'webkit';
         var listener;
-        document.addEventListener = function(a, b, c) {
+        document.addEventListener = function (a, b, c) {
             listener = b;
         };
         spyOn(Visibility, '_onVisibilityChange').andCallFake(function () {
@@ -109,7 +109,7 @@ describe('Visibility', function () {
 
     it('should set listener in IE', function () {
         Visibility._chechedPrefix = 'ms';
-        Visibility._doc = document = { attachEvent: function() { } };
+        Visibility._doc = document = { attachEvent: function () { } };
         spyOn(document, 'attachEvent');
 
         Visibility._setListener();
