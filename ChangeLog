@@ -1,3 +1,6 @@
+== 0.4 (Vanguard 1, alternative)
+* Add fallback API support by focus/blur hack to all browsers.
+
 == 0.3 (Explorer 1, answer)
 * Rename gem to visibilityjs.
 * Fix gem integration with Asset Pipeline paths.
