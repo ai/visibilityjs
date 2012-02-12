@@ -21,11 +21,11 @@ actually supported in the browser as, if it does not, the library will just
 assume that the page is visible all the time, and your logic will still work
 correctly, albeit less effective in some cases.
 
-Page Visibility API is natively supported by Google Chrome and IE 10. You can
-add support to Firefox 5 by [MozVisibility] hack (include it before
-Visibility.js). For others browsers you can use `lib/visibility.fallback.js`
-with focus/blur hack (note that this hack have some issue,
-see falllback documentation).
+Page Visibility API is natively supported by Google Chrome, Firefox and IE 10.
+You can add support for old Firefox (5–9 versions) by [MozVisibility] hack
+(include it before Visibility.js). For others browsers you can use
+`lib/visibility.fallback.js` with focus/blur hack (note that this hack have
+some issue, see falllback documentation).
 
 [Page Visibility API]: http://www.w3.org/TR/2011/WD-page-visibility-20110602/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
