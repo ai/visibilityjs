@@ -27,9 +27,12 @@ You can add support for old Firefox (5–9 versions) by [MozVisibility] hack
 `lib/visibility.fallback.js` with focus/blur hack (note that this hack have
 some issue, see falllback documentation).
 
+Sponsored by [Evil Martians].
+
 [Page Visibility API]: http://www.w3.org/TR/2011/WD-page-visibility-20110602/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
 [MozVisibility]:       https://github.com/private-face/mozvisibility
+[Evil Martians]:       http://evilmartians.com/
 
 ## Translations
 
