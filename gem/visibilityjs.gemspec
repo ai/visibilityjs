@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Andrey “A.I.” Sitnik']
   s.email       = ['andrey@sitnik.ru']
-  s.homepage    = 'https://github.com/evilmartians/visibility.js'
+  s.homepage    = 'https://github.com/ai/visibility.js'
   s.summary     = 'Visibility.js – a wrapper for the Page Visibility API.'
   s.description = 'Visibility.js allow you to determine whether ' +
                   'your web page is visible to an user, is hidden in ' +
