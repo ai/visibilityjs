@@ -1,3 +1,6 @@
+== 0.4.1 (Explorer 3, repeat)
+* Fix documentation and gemspec.
+
 == 0.4 (Vanguard 1, alternative)
 * Add fallback API support by focus/blur hack to all browsers.
 
@@ -11,4 +14,4 @@
 * Documentation fixes by Peter Zotov.
 
 == 0.1 (Sputnik 1, the first)
-* initial release.
+* Initial release.
