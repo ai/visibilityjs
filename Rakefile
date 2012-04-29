@@ -52,9 +52,9 @@ directory 'pkg'
 
 task :build => [:copy_vendor, :copy_docs, 'pkg'] do
   FileUtils.cd 'gem'
-  spec = Gem::Specification.load(root + 'gem/visibilityjs.gemspec')
+  spec = Gem::Specification.load(root.join('gem/visibilityjs.gemspec').to_s)
   Gem::Builder.new(spec).build
-  mv spec.file_name, root + "pkg/#{spec.file_name}"
+  mv spec.file_name, root.join("pkg/#{spec.file_name}").to_s
   FileUtils.cd '..'
 end
 
