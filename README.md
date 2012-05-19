@@ -258,29 +258,24 @@ prefixes), you can use [visibly.js](https://github.com/addyosmani/visibly.js).
 
 ## Contributing
 
-To run project tests and minimize source you’ll need to have Ruby and Bundler
-installed. For example, in a Debian-based (e.g. Ubuntu) environment:
+1. To run tests you need node.js and npm. For example, in Ubuntu run:
 
-```
-sudo apt-get install ruby rubygems
-sudo gem install bundler
-```
+   ```sh
+   sudo apt-get install nodejs npm
+   ```
 
-Then, you will need to install Jasmine, UglifyJS and other dependencies with
-Bundler. Run in root of the project repository:
+2. Next install npm dependencies:
 
-```
-bundle install --path=.bundle
-```
+   ```sh
+   npm install
+   ```
 
-That’s all. To run tests, start server and open <http://localhost:8888/>:
+3. Run test server:
 
-```
-bundle exec rake server
-```
+   ```sh
+   ./node_modules/.bin/cake test
+   ```
 
-Minimize the source before commiting:
-
-```
-bundle exec rake min
-```
+4. Open tests in browser: <localhost:8000>.
+5. Also you can see real usage example in integration test
+   `test/integration.html`.
