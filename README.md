@@ -219,37 +219,33 @@ Visibility.change(function (e, state) {
 
 ## Installing
 
-### Rails 3.1
+### Ruby on Rails
 
-In Rails 3.1 just add `visibilityjs` gem to `Gemfile`:
+For Ruby on Rails you can use gem for Assets Pipeline.
 
-```ruby
-gem 'visibilityjs'
-```
+1. Add `visibilityjs` gem to `Gemfile`:
 
-and require it in `app/assets/javascripts/application.js.coffee`:
+   ```ruby
+   gem "visibilityjs"
+   ```
 
-```coffee
-#= require visibility
-```
+2. Install gems:
 
-### Jammit
+   ```sh
+   bundle install
+   ```
 
-If you use Jammit or another package manager, you’ll need to copy
-`lib/visibility.js` to `public/javascripts/lib` in your project and add the
-library to `config/assets.yml`:
+3. Include Visibility.js to your `application.js.coffee`:
 
-```yaml
-javascripts:
-  application:
-    - public/javascripts/lib/visibility.js
-```
+   ```coffee
+   #= require visibility
+   ```
 
 ### Other
 
-If you don’t use Rails 3.1 or assets packaging manager you can use an already
-minified version of the library, located in repository as
-`lib/visibility.min.js`.
+If you don’t use any assets packaging manager (it’s very bad idea), you can use
+already minified version of the library.
+Take it from: <https://github.com/ai/visibility.js/downloads>.
 
 ## Alternatives
 
