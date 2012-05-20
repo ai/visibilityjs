@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
                   'the page visibility state in JavaScript logic and improve ' +
                   'browser performance or improve user interface experience.'
 
-  s.add_dependency 'sprockets', '>= 2.0.0.beta.5'
+  s.add_dependency 'sprockets', '>= 2'
 
   s.files            = ['vendor/assets/javascripts/visibility.js',
                         'vendor/assets/javascripts/visibility.fallback.js',
