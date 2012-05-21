@@ -1,3 +1,6 @@
+== 0.4.3 (Explorer 4, short)
+* Fix gemspec issue with Bundler.
+
 == 0.4.2 (Sputnik 3, real)
 * Reorder code to show first public and common methods.
 * Use node.js Cake instead of Ruby’s Rake to build tasks.
