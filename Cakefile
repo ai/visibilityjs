@@ -101,6 +101,7 @@ task 'test', 'Run specs server', ->
       res.write 'Not Found'
     res.end()
   server.listen 8000
+  console.log('Open http://localhost:8000/')
 
 task 'min', 'Create minimized version of library', ->
   fs.mkdirSync('pkg/') unless path.existsSync('pkg/')
