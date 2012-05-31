@@ -103,6 +103,9 @@ task 'test', 'Run specs server', ->
   server.listen 8000
   console.log('Open http://localhost:8000/')
 
+task 'clean', 'Remove all generated files', ->
+  wrench.rmdirSyncRecursive('pkg/') if path.existsSync('pkg/')
+
 task 'min', 'Create minimized version of library', ->
   fs.mkdirSync('pkg/') unless path.existsSync('pkg/')
   version = JSON.parse(fs.readFileSync('package.json')).version
