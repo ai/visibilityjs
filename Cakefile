@@ -4,7 +4,6 @@ http   = require('http')
 path   = require('path')
 glob   = require('glob')
 coffee = require('coffee-script')
-wrench = require('wrench')
 uglify = require('uglify-js')
 
 mocha =
@@ -86,10 +85,10 @@ task 'test', 'Run specs server', ->
       res.writeHead 200, { 'Content-Type': 'text/html' }
       res.write mocha.html()
     else if req.url == '/visibility.js'
-      res.writeHead 200, {'Content-Type': 'text/javascript'}
+      res.writeHead 200, { 'Content-Type': 'text/javascript' }
       res.write fs.readFileSync('lib/visibility.js')
     else if req.url == '/visibility.fallback.js'
-      res.writeHead 200, {'Content-Type': 'text/javascript'}
+      res.writeHead 200, { 'Content-Type': 'text/javascript' }
       res.write fs.readFileSync('lib/visibility.fallback.js')
     else if req.url == '/integration'
       html = fs.readFileSync('test/integration.html').toString()
@@ -97,14 +96,15 @@ task 'test', 'Run specs server', ->
       res.writeHead 200, { 'Content-Type': 'text/html' }
       res.write(html)
     else
-      res.writeHead 404, {'Content-Type': 'text/plain'}
+      res.writeHead 404, { 'Content-Type': 'text/plain' }
       res.write 'Not Found'
     res.end()
   server.listen 8000
   console.log('Open http://localhost:8000/')
 
 task 'clean', 'Remove all generated files', ->
-  wrench.rmdirSyncRecursive('pkg/') if path.existsSync('pkg/')
+  fs.removeSync('build/') if path.existsSync('build/')
+  fs.removeSync('pkg/')   if path.existsSync('pkg/')
 
 task 'min', 'Create minimized version of library', ->
   fs.mkdirSync('pkg/') unless path.existsSync('pkg/')
@@ -122,17 +122,19 @@ task 'min', 'Create minimized version of library', ->
     fs.writeFileSync("pkg/#{name}-#{version}.min.js", min)
 
 task 'gem', 'Build RubyGem package', ->
-  fs.rmrfSync('build/') if path.existsSync('build/')
-  wrench.mkdirSyncRecursive('build/lib/assets/javascripts/')
-  fs.copyFileSync('gem/visibilityjs.gemspec', 'build/visibilityjs.gemspec')
-  fs.copyFileSync('gem/visibilityjs.rb',      'build/lib/visibilityjs.rb')
-  fs.copyFileSync('lib/visibility.js',
-                  'build/lib/assets/javascripts/visibility.js')
-  fs.copyFileSync('lib/visibility.fallback.js',
-                  'build/lib/assets/javascripts/visibility.fallback.js')
-  fs.copyFileSync('README.md', 'build/README.md')
-  fs.copyFileSync('LICENSE',   'build/LICENSE')
-  fs.copyFileSync('ChangeLog', 'build/ChangeLog')
+  fs.removeSync('build/') if path.existsSync('build/')
+  fs.mkdirSync('build/lib/assets/javascripts/')
+
+  copy = require('fs-extra/lib/copy').copyFileSync
+  copy('gem/visibilityjs.gemspec', 'build/visibilityjs.gemspec')
+  copy('gem/visibilityjs.rb',      'build/lib/visibilityjs.rb')
+  copy('lib/visibility.js',        'build/lib/assets/javascripts/visibility.js')
+  copy('lib/visibility.fallback.js',
+       'build/lib/assets/javascripts/visibility.fallback.js')
+  copy('README.md', 'build/README.md')
+  copy('LICENSE',   'build/LICENSE')
+  copy('ChangeLog', 'build/ChangeLog')
+
   exec 'cd build/; gem build visibilityjs.gemspec', (error, message) ->
     if error
       process.stderr.write(error.message)
@@ -140,5 +142,5 @@ task 'gem', 'Build RubyGem package', ->
     else
       fs.mkdirSync('pkg/') unless path.existsSync('pkg/')
       gem = glob.sync('build/*.gem')[0]
-      fs.copyFileSync(gem, gem.replace(/^build\//, 'pkg/'))
-      wrench.rmdirSyncRecursive('build/')
+      copy(gem, gem.replace(/^build\//, 'pkg/'))
+      fs.removeSync('build/')
