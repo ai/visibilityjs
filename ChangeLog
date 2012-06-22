@@ -1,3 +1,7 @@
+== 0.4.5 (Pioneer 3, closer)
+* Fix gem assets directory.
+* Update development dependencies.
+
 == 0.4.4 (Pioneer 1, deeper into space)
 * Remove non-ASCII symbols from gemspec.
 * Print testing URL in test task.
