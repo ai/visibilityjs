@@ -123,14 +123,13 @@ task 'min', 'Create minimized version of library', ->
 
 task 'gem', 'Build RubyGem package', ->
   fs.rmrfSync('build/') if path.existsSync('build/')
-  wrench.mkdirSyncRecursive('build/lib/')
-  wrench.mkdirSyncRecursive('build/vendor/assets/javascripts/')
+  wrench.mkdirSyncRecursive('build/lib/assets/javascripts/')
   fs.copyFileSync('gem/visibilityjs.gemspec', 'build/visibilityjs.gemspec')
   fs.copyFileSync('gem/visibilityjs.rb',      'build/lib/visibilityjs.rb')
   fs.copyFileSync('lib/visibility.js',
-                  'build/vendor/assets/javascripts/visibility.js')
+                  'build/lib/assets/javascripts/visibility.js')
   fs.copyFileSync('lib/visibility.fallback.js',
-                  'build/vendor/assets/javascripts/visibility.fallback.js')
+                  'build/lib/assets/javascripts/visibility.fallback.js')
   fs.copyFileSync('README.md', 'build/README.md')
   fs.copyFileSync('LICENSE',   'build/LICENSE')
   fs.copyFileSync('ChangeLog', 'build/ChangeLog')
