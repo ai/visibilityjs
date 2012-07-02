@@ -5,8 +5,9 @@ describe 'Visibility', ->
     Visibility._chechedPrefix     = null
     Visibility._listening         = false
     Visibility._timersInitialized = false
-    Visibility._changeCallbacks   = []
-    Visibility._lastTimer         = 0
+    Visibility._lastCallback      = -1
+    Visibility._callbacks         = []
+    Visibility._lastTimer         = -1
     Visibility._timers            = { }
     Visibility._hiddenBefore      = false
     Visibility._setInterval       = ->
@@ -80,7 +81,7 @@ describe 'Visibility', ->
         sinon.spy(Visibility, '_setListener')
         callback = sinon.spy()
 
-        Visibility.change(callback).should.be.true
+        Visibility.change(callback).should.not.be.false
         Visibility._setListener.should.have.been.called
 
         event = { }
@@ -92,6 +93,24 @@ describe 'Visibility', ->
         Visibility._onVisibilityChange(event)
         callback.should.have.been.calledTwice
         callback.getCall(1).calledWith(event, 'hidden').should.be.true
+
+    describe '.unbind()', ->
+
+      it 'should remove listener', ->
+        Visibility._chechedPrefix = 'webkit'
+        sinon.spy(Visibility, '_setListener')
+
+        callback1 = sinon.spy()
+        callback2 = sinon.spy()
+
+        id1 = Visibility.change(callback1)
+        id2 = Visibility.change(callback2)
+
+        Visibility.unbind(id2)
+
+        Visibility._onVisibilityChange({ })
+        callback1.should.have.been.called
+        callback2.should.not.have.been.called
 
     describe '.afterPrerendering()', ->
 
