@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'sprockets', '>= 2'
 
   s.files            = ['lib/assets/javascripts/visibility.js',
+                        'lib/assets/javascripts/visibility.core.js',
+                        'lib/assets/javascripts/visibility.timers.js',
                         'lib/assets/javascripts/visibility.fallback.js',
                         'lib/visibilityjs.rb',
                         'LICENSE', 'README.md', 'ChangeLog']

@@ -219,6 +219,18 @@ Visibility.change(function (e, state) {
 
 ## Installing
 
+### Packages
+
+Visibility.js shipped with 4 files:
+
+* `visibility.core` – core module.
+* `visibility.timers` – `every` and `stop` methods to set `setTimeout` depend
+  on visibility state.
+* `visibility` – `visibility.core` and `visibility.timers` together.
+* `visibility.fallback` – fallback for browser without Page Visibility API.
+  It use document `focus`/`blur` events, so it say, that document in hidden,
+  when browser just lose focus.
+
 ### Ruby on Rails
 
 For Ruby on Rails you can use gem for Assets Pipeline.
@@ -239,6 +251,13 @@ For Ruby on Rails you can use gem for Assets Pipeline.
 
    ```coffee
    #= require visibility
+   ```
+
+   If you didn’t use `every` method, you can reduce library size, by including
+   only core module:
+
+   ```coffee
+   #= require visibility.core
    ```
 
 ### Other

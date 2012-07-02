@@ -15,7 +15,8 @@ mocha =
               <title>Visibility.js Tests</title>
               <style>#style#</style>
               <script>#script#</script>
-              <script src="/visibility.js"></script>
+              <script src="/visibility.core.js"></script>
+              <script src="/visibility.timers.js"></script>
               <script>#tests#</script>
               <style>
                 body {
@@ -84,20 +85,29 @@ task 'test', 'Run specs server', ->
     if req.url == '/'
       res.writeHead 200, { 'Content-Type': 'text/html' }
       res.write mocha.html()
-    else if req.url == '/visibility.js'
+
+    else if req.url == '/visibility.core.js'
       res.writeHead 200, { 'Content-Type': 'text/javascript' }
-      res.write fs.readFileSync('lib/visibility.js')
+      res.write fs.readFileSync('lib/visibility.core.js')
+
+    else if req.url == '/visibility.timers.js'
+      res.writeHead 200, { 'Content-Type': 'text/javascript' }
+      res.write fs.readFileSync('lib/visibility.timers.js')
+
     else if req.url == '/visibility.fallback.js'
       res.writeHead 200, { 'Content-Type': 'text/javascript' }
       res.write fs.readFileSync('lib/visibility.fallback.js')
+
     else if req.url == '/integration'
       html = fs.readFileSync('test/integration.html').toString()
       html = html.replace(/\.\.\/lib/g, '')
       res.writeHead 200, { 'Content-Type': 'text/html' }
       res.write(html)
+
     else
       res.writeHead 404, { 'Content-Type': 'text/plain' }
       res.write 'Not Found'
+
     res.end()
   server.listen 8000
   console.log('Open http://localhost:8000/')
@@ -106,20 +116,37 @@ task 'clean', 'Remove all generated files', ->
   fs.removeSync('build/') if path.existsSync('build/')
   fs.removeSync('pkg/')   if path.existsSync('pkg/')
 
+fullPack = (file) ->
+  core = fs.readFileSync('lib/visibility.core.js').toString()
+  core = core.replace('})();', '')
+
+  timers = fs.readFileSync('lib/visibility.timers.js').toString()
+  timers = timers.replace(/[\w\W]*var timers/, '    var timers')
+
+  fs.writeFileSync(file, core + timers)
+
 task 'min', 'Create minimized version of library', ->
   fs.mkdirSync('pkg/') unless path.existsSync('pkg/')
   version = JSON.parse(fs.readFileSync('package.json')).version
-  files = ['lib/visibility.js', 'lib/visibility.fallback.js']
+  copy = require('fs-extra/lib/copy').copyFileSync
+
+  files = ['lib/visibility.core.js', 'lib/visibility.timers.js',
+           'lib/visibility.fallback.js']
   for file in files
-    name    = file.replace(/^lib\//, '').replace(/\.js$/, '')
-    source  = fs.readFileSync(file).toString()
+    name = file.replace(/^lib\//, '').replace(/\.js$/, '')
+    copy(file, "pkg/#{name}-#{version}.min.js")
+  fullPack("pkg/visibility-#{version}.min.js")
+
+  packages = glob.sync('pkg/*.js')
+  for file in packages
+    source = fs.readFileSync(file).toString()
 
     ast = uglify.parser.parse(source)
     ast = uglify.uglify.ast_mangle(ast)
     ast = uglify.uglify.ast_squeeze(ast)
     min = uglify.uglify.gen_code(ast)
 
-    fs.writeFileSync("pkg/#{name}-#{version}.min.js", min)
+    fs.writeFileSync(file, min)
 
 task 'gem', 'Build RubyGem package', ->
   fs.removeSync('build/') if path.existsSync('build/')
@@ -128,12 +155,16 @@ task 'gem', 'Build RubyGem package', ->
   copy = require('fs-extra/lib/copy').copyFileSync
   copy('gem/visibilityjs.gemspec', 'build/visibilityjs.gemspec')
   copy('gem/visibilityjs.rb',      'build/lib/visibilityjs.rb')
-  copy('lib/visibility.js',        'build/lib/assets/javascripts/visibility.js')
+  copy('lib/visibility.core.js',
+       'build/lib/assets/javascripts/visibility.core.js')
+  copy('lib/visibility.timers.js',
+       'build/lib/assets/javascripts/visibility.timers.js')
   copy('lib/visibility.fallback.js',
        'build/lib/assets/javascripts/visibility.fallback.js')
   copy('README.md', 'build/README.md')
   copy('LICENSE',   'build/LICENSE')
   copy('ChangeLog', 'build/ChangeLog')
+  fullPack('build/lib/assets/javascripts/visibility.js')
 
   exec 'cd build/; gem build visibilityjs.gemspec', (error, message) ->
     if error
