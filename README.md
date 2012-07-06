@@ -22,10 +22,9 @@ assume that the page is visible all the time, and your logic will still work
 correctly, albeit less effective in some cases.
 
 Page Visibility API is natively supported by Google Chrome, Firefox and IE 10.
-You can add support for old Firefox (5–9 versions) by [MozVisibility] hack
-(include it before Visibility.js). For others browsers you can use
-`lib/visibility.fallback.js` with focus/blur hack (note that this hack have
-some issue, see falllback documentation).
+For others browsers you can use `lib/visibility.fallback.js` with focus/blur
+hack (note that this hack have issue, that document become to be hidden,
+when browser just lose focus, but still visible for user).
 
 Sponsored by [Evil Martians].
 
@@ -228,8 +227,8 @@ Visibility.js shipped with 4 files:
   on visibility state.
 * `visibility` – `visibility.core` and `visibility.timers` together.
 * `visibility.fallback` – fallback for browser without Page Visibility API.
-  It use document `focus`/`blur` events, so it say, that document in hidden,
-  when browser just lose focus.
+  It use document `focus`/`blur` events, so document become to be hidden,
+  when browser just lose focus, but still visible for user.
 
 ### Ruby on Rails
 
