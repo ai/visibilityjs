@@ -266,11 +266,6 @@ If you don’t use any assets packaging manager (it’s very bad idea), you can 
 already minified version of the library.
 Take it from: <https://github.com/ai/visibility.js/downloads>.
 
-## Alternatives
-
-If you need smaller and simpler wrapper (for example, just to hide vendor
-prefixes), you can use [visibly.js](https://github.com/addyosmani/visibly.js).
-
 ## Contributing
 
 1. To run tests you need node.js and npm. For example, in Ubuntu run:
