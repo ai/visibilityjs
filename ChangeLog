@@ -1,3 +1,8 @@
+== 0.5 (SCORE, communication)
+* Split library to core and timers modules.
+* Allow to unbind change listener.
+* Use common logic in change(), afterPrerendering() and onVisible().
+
 == 0.4.5 (Pioneer 3, closer)
 * Fix gem assets directory.
 * Update development dependencies.
