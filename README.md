@@ -220,7 +220,7 @@ Visibility.change(function (e, state) {
 
 ### Packages
 
-Visibility.js shipped with 4 files:
+Visibility.js is shipped with 4 files:
 
 * `visibility.core` – core module.
 * `visibility.timers` – `every` and `stop` methods to set `setTimeout` depend
@@ -246,13 +246,13 @@ For Ruby on Rails you can use gem for Assets Pipeline.
    bundle install
    ```
 
-3. Include Visibility.js to your `application.js.coffee`:
+3. Include Visibility.js in your `application.js.coffee`:
 
    ```coffee
    #= require visibility
    ```
 
-   If you didn’t use `every` method, you can reduce library size, by including
+   If you willn’t use `every` method, you can reduce library size by including
    only core module:
 
    ```coffee
@@ -263,7 +263,9 @@ For Ruby on Rails you can use gem for Assets Pipeline.
 
 If you don’t use any assets packaging manager (it’s very bad idea), you can use
 already minified version of the library.
-Take it from: <https://github.com/ai/visibility.js/downloads>.
+Take it from: [github.com/ai/visibility.js/downloads].
+
+[github.com/ai/visibility.js/downloads]: https://github.com/ai/visibility.js/downloads
 
 ## Contributing
 
@@ -285,6 +287,8 @@ Take it from: <https://github.com/ai/visibility.js/downloads>.
    ./node_modules/.bin/cake test
    ```
 
-4. Open tests in browser: [localhost:8000](http://localhost:8000/).
+4. Open tests in browser: [localhost:8000].
 5. Also you can see real usage example in integration test
    `test/integration.html`.
+
+[localhost:8000]: http://localhost:8000
