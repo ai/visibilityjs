@@ -285,6 +285,6 @@ Take it from: <https://github.com/ai/visibility.js/downloads>.
    ./node_modules/.bin/cake test
    ```
 
-4. Open tests in browser: <localhost:8000>.
+4. Open tests in browser: [localhost:8000](http://localhost:8000/).
 5. Also you can see real usage example in integration test
    `test/integration.html`.
