@@ -259,11 +259,20 @@ For Ruby on Rails you can use gem for Assets Pipeline.
    #= require visibility.core
    ```
 
+### CDN
+
+If you don’t use any assets packaging manager use [CDNJS]. Add to your site:
+
+```html
+<script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/0.5/visibility.min.js"></script>
+```
+
+[CDNJS]: http://cdnjs.com/
+
 ### Other
 
-If you don’t use any assets packaging manager (it’s very bad idea), you can use
-already minified version of the library.
-Take it from: [github.com/ai/visibility.js/downloads].
+If you need just a files, you can take already minified packages from
+[github.com/ai/visibility.js/downloads].
 
 [github.com/ai/visibility.js/downloads]: https://github.com/ai/visibility.js/downloads
 
