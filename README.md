@@ -216,6 +216,38 @@ Visibility.change(function (e, state) {
 });
 ```
 
+Method `change` returns listener ID. You can use it to unbind listener by
+`Visibility.unbind(id)`:
+
+```js
+var listener = Visibility.change(function (e, state) {
+    if ( !Visibility.hidden() ) {
+       VideoPlayer.pause();
+    }
+});
+
+VideoPlayer.onFinish(function () {
+    Visibility.unbind(listener);
+});
+```
+
+Methods `onVisible` and `afterPrerendering` will also return listener ID,
+if they wait visibility state changes. If they execute callback immediately,
+they return `true` if Page Visibility API is supported and `false`
+if they can’t detect visibility state.
+
+```js
+var listener = Visibility.onVisible(function () {
+    notification.takeAttention();
+});
+
+notification.onOutOfDate(function () {
+    if ( typeof(listener) == 'number' ) {
+        Visibility.unbind(listener);
+    }
+});
+```
+
 ## Installing
 
 ### Packages
