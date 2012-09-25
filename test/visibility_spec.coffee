@@ -27,7 +27,7 @@ describe 'Visibility', ->
         sinon.spy(Visibility, '_setListener')
         callback = sinon.spy()
 
-        Visibility.onVisible(callback)
+        Visibility.onVisible(callback).should.be.false
 
         callback.should.have.been.called
         Visibility._setListener.should.not.have.been.called
@@ -38,7 +38,7 @@ describe 'Visibility', ->
         sinon.spy(Visibility, '_setListener')
         callback = sinon.spy()
 
-        Visibility.onVisible(callback)
+        Visibility.onVisible(callback).should.be.true
 
         callback.should.have.been.called
         Visibility._setListener.should.not.have.been.called
@@ -49,7 +49,7 @@ describe 'Visibility', ->
         sinon.spy(Visibility, '_setListener')
         callback = sinon.spy()
 
-        Visibility.onVisible(callback)
+        Visibility.onVisible(callback).should.be.a('number')
 
         callback.should.not.have.been.called
         Visibility._setListener.should.have.been.called
@@ -119,7 +119,7 @@ describe 'Visibility', ->
         sinon.stub(Visibility, '_setListener')
         callback = sinon.spy()
 
-        Visibility.afterPrerendering(callback)
+        Visibility.afterPrerendering(callback).should.be.false
 
         callback.should.have.been.called
         Visibility._setListener.should.not.have.been.called
@@ -130,7 +130,7 @@ describe 'Visibility', ->
         sinon.stub(Visibility, '_setListener')
         callback = sinon.spy()
 
-        Visibility.afterPrerendering(callback)
+        Visibility.afterPrerendering(callback).should.be.true
 
         callback.should.have.been.called
         Visibility._setListener.should.not.have.been.called
@@ -141,7 +141,7 @@ describe 'Visibility', ->
         sinon.stub(Visibility, '_setListener')
         callback = sinon.spy()
 
-        Visibility.afterPrerendering(callback)
+        Visibility.afterPrerendering(callback).should.be.a('number')
 
         callback.should.not.have.been.called
         Visibility._setListener.should.have.been.called
