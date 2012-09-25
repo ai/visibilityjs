@@ -29,7 +29,6 @@ mocha =
                 document.body.onload = function() {
                   mocha.setup({
                     ui: 'bdd',
-                    reporter: mocha.reporters.HTML,
                     ignoreLeaks: true
                   });
                   mocha.run();
