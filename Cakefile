@@ -149,7 +149,7 @@ task 'min', 'Create minimized version of library', ->
 
 task 'gem', 'Build RubyGem package', ->
   fs.removeSync('build/') if path.existsSync('build/')
-  fs.mkdirSync('build/lib/assets/javascripts/')
+  fs.mkdirsSync('build/lib/assets/javascripts/')
 
   copy = require('fs-extra/lib/copy').copyFileSync
   copy('gem/visibilityjs.gemspec', 'build/visibilityjs.gemspec')
