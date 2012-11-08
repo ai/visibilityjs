@@ -1,3 +1,6 @@
+== 0.6.1 (Vanguard 2, weather)
+* Remove unnecessary vendor prefixes.
+
 == 0.6 (Luna 1, Mechta)
 * Methods onVisible and afterPrerendering return listener ID (by mcfedr).
 * Fix documentation (by Erwann Mest).

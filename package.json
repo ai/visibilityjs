@@ -1,6 +1,6 @@
 {
   "name": "visibility.js",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "devDependencies": {
     "coffee-script": "1.4.0",
     "mocha":         "1.6.0",
