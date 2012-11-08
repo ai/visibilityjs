@@ -123,7 +123,7 @@ the page:
 
 ```js
 Visibility.onVisible(function () {
-    Notification.animateNotice("Hello");
+    startIntroAnimation();
 });
 ```
 
