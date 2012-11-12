@@ -6,43 +6,73 @@ glob   = require('glob')
 coffee = require('coffee-script')
 uglify = require('uglify-js')
 
+project =
+
+  package: ->
+    JSON.parse(fs.readFileSync('package.json'))
+
+  name: ->
+    @package().name
+
+  version: ->
+    @package().version
+
+  tests: ->
+    fs.readdirSync('test/').
+      filter( (i) -> i.match /\.coffee$/ ).
+      map( (i) -> "test/#{i}" )
+
+  libs: ->
+    fs.readdirSync('lib/').map( (i) -> "lib/#{i}" )
+
+  title: ->
+    @name()[0].toUpperCase() + @name()[1..-1]
+
 mocha =
 
   template: """
             <html>
             <head>
               <meta charset="UTF-8">
-              <title>Visibility.js Tests</title>
-              <style>#style#</style>
-              <script>#script#</script>
-              <script src="/visibility.core.js"></script>
-              <script src="/visibility.timers.js"></script>
-              <script>#tests#</script>
+              <title>#title# Tests</title>
+              <link rel="stylesheet" href="/style.css">
               <style>
                 body {
                   padding: 0;
                 }
+                #integration {
+                  position: absolute;
+                  top: 1.45em;
+                  margin-left: 120px;
+                  font-weight: 200;
+                  font-size: 0.7em;
+                }
               </style>
-            <body>
-              <div id="mocha"></div>
+              #system#
               <script>
-                document.body.onload = function() {
-                  mocha.setup({
-                    ui: 'bdd',
-                    ignoreLeaks: true
-                  });
+                chai.should();
+                mocha.setup({ ui: 'bdd', ignoreLeaks: true });
+                window.onload = function() {
                   mocha.run();
                 };
               </script>
+              #libs#
+              #tests#
+            <body>
+              <a href="/integration" id="integration" target="_blank">
+                see also integration test →
+              </a>
+              <div id="mocha"></div>
             </body>
             </html>
             """
 
   html: ->
     @render @template,
-      style:  @cdata(@style())
-      script: @cdata(@script())
-      tests:  @cdata(@tests())
+      system: @system()
+      libs:   @scripts project.libs()
+      tests:  @scripts project.tests()
+      title:  project.title()
 
   render: (template, params) ->
     html = template
@@ -50,66 +80,68 @@ mocha =
       html = html.replace("##{name}#", value.replace(/\$/g, '$$$$'))
     html
 
-  cdata: (text) ->
-    "/*<![CDATA[*/\n" +
-    text + "\n" +
-    "/*]]>*/"
+  scripts: (files) ->
+    files.map( (i) -> "<script src=\"/#{i}\"></script>" ).join("\n  ")
 
   style: ->
     fs.readFileSync('node_modules/mocha/mocha.css')
 
-  script: ->
-    @testLibs() +
-    "chai.should();\n" +
-    "mocha.setup('bdd');\n"
+  system: ->
+    @scripts ['node_modules/mocha/mocha.js',
+              'node_modules/chai/chai.js',
+              'node_modules/sinon/lib/sinon.js',
+              'node_modules/sinon/lib/sinon/spy.js',
+              'node_modules/sinon/lib/sinon/stub.js',
+              'node_modules/sinon-chai/lib/sinon-chai.js']
 
-  testLibs: ->
-    fs.readFileSync('node_modules/mocha/mocha.js') +
-    fs.readFileSync('node_modules/chai/chai.js') +
-    fs.readFileSync('node_modules/sinon/lib/sinon.js') +
-    fs.readFileSync('node_modules/sinon/lib/sinon/spy.js') +
-    fs.readFileSync('node_modules/sinon/lib/sinon/stub.js') +
-    fs.readFileSync('node_modules/sinon-chai/lib/sinon-chai.js')
-
-  lib: ->
-
-  tests: ->
-    files  = fs.readdirSync('test/').
-      filter( (i) -> i.match /\.coffee$/ ).map( (i) -> "test/#{i}" )
-    src = files.reduce ( (all, i) -> all + fs.readFileSync(i) ), ''
-    coffee.compile(src)
-
-task 'test', 'Run specs server', ->
+task 'server', 'Run test server', ->
   server = http.createServer (req, res) ->
     if req.url == '/'
-      res.writeHead 200, { 'Content-Type': 'text/html' }
+      res.writeHead 200, 'Content-Type': 'text/html'
       res.write mocha.html()
 
-    else if req.url == '/visibility.core.js'
-      res.writeHead 200, { 'Content-Type': 'text/javascript' }
-      res.write fs.readFileSync('lib/visibility.core.js')
-
-    else if req.url == '/visibility.timers.js'
-      res.writeHead 200, { 'Content-Type': 'text/javascript' }
-      res.write fs.readFileSync('lib/visibility.timers.js')
-
-    else if req.url == '/visibility.fallback.js'
-      res.writeHead 200, { 'Content-Type': 'text/javascript' }
-      res.write fs.readFileSync('lib/visibility.fallback.js')
+    else if req.url == '/style.css'
+      res.writeHead 200, 'Content-Type': 'text/css'
+      res.write mocha.style()
 
     else if req.url == '/integration'
-      html = fs.readFileSync('test/integration.html').toString()
-      html = html.replace(/\.\.\/lib/g, '')
-      res.writeHead 200, { 'Content-Type': 'text/html' }
-      res.write(html)
+      res.writeHead 200, 'Content-Type': 'text/html'
+      res.write fs.readFileSync('test/integration.html')
+
+    else if fs.existsSync('.' + req.url)
+      file = fs.readFileSync('.' + req.url).toString()
+      if req.url.match(/\.coffee$/)
+        file = coffee.compile(file)
+      if req.url.match(/\.(js|coffee)$/)
+        res.writeHead 200, 'Content-Type': 'application/javascript'
+      res.write file
 
     else
-      res.writeHead 404, { 'Content-Type': 'text/plain' }
+      res.writeHead 404, 'Content-Type': 'text/plain'
       res.write 'Not Found'
-
     res.end()
+
   server.listen 8000
   console.log('Open http://localhost:8000/')
+
+task 'test', 'Run tests in node', ->
+  files   = ['test/mocha.js'].concat(project.libs()).concat(project.tests())
+  options =
+    ui:         'bdd'
+    reporter:   'spec'
+    compilers:  'coffee:coffee-script'
+    ignoreLeaks: true
+    colors:      true
+
+  command = 'node_modules/.bin/mocha '
+  for name, value of options
+    name = name.replace /[A-Z]/, (letter) -> '-' + letter.toLowerCase()
+    command += "--#{name} " + if value == true then '' else " #{value} "
+  command += files.join(' ')
+  exec command, (error, stdout, stderr) ->
+    console.log(stdout)   if stdout?
+    console.error(stderr) if stderr?
+    process.exit(1)       if error
 
 task 'clean', 'Remove all generated files', ->
   fs.removeSync('build/') if path.existsSync('build/')
@@ -125,16 +157,13 @@ fullPack = (file) ->
   fs.writeFileSync(file, core + timers)
 
 task 'min', 'Create minimized version of library', ->
-  fs.mkdirSync('pkg/') unless path.existsSync('pkg/')
-  version = JSON.parse(fs.readFileSync('package.json')).version
   copy = require('fs-extra/lib/copy').copyFileSync
 
-  files = ['lib/visibility.core.js', 'lib/visibility.timers.js',
-           'lib/visibility.fallback.js']
-  for file in files
+  fs.mkdirsSync('pkg/') unless path.existsSync('pkg/')
+  for file in project.libs()
     name = file.replace(/^lib\//, '').replace(/\.js$/, '')
-    copy(file, "pkg/#{name}-#{version}.min.js")
-  fullPack("pkg/visibility-#{version}.min.js")
+    copy(file, "pkg/#{name}-#{project.version()}.min.js")
+  fullPack("pkg/visibility-#{project.version()}.min.js")
 
   packages = glob.sync('pkg/*.js')
   for file in packages
@@ -152,25 +181,26 @@ task 'gem', 'Build RubyGem package', ->
   fs.mkdirsSync('build/lib/assets/javascripts/')
 
   copy = require('fs-extra/lib/copy').copyFileSync
-  copy('gem/visibilityjs.gemspec', 'build/visibilityjs.gemspec')
-  copy('gem/visibilityjs.rb',      'build/lib/visibilityjs.rb')
-  copy('lib/visibility.core.js',
-       'build/lib/assets/javascripts/visibility.core.js')
-  copy('lib/visibility.timers.js',
-       'build/lib/assets/javascripts/visibility.timers.js')
-  copy('lib/visibility.fallback.js',
-       'build/lib/assets/javascripts/visibility.fallback.js')
-  copy('README.md', 'build/README.md')
-  copy('LICENSE',   'build/LICENSE')
-  copy('ChangeLog', 'build/ChangeLog')
+  gem  = project.name().replace('.', '')
+
+  gemspec = fs.readFileSync("gem/#{gem}.gemspec").toString()
+  gemspec = gemspec.replace('VERSION', "'#{project.version()}'")
+  fs.writeFileSync("build/#{gem}.gemspec", gemspec)
+
+  copy("gem/#{gem}.rb",      "build/lib/#{gem}.rb")
+  copy('README.md',          'build/README.md')
+  copy('ChangeLog',          'build/ChangeLog')
+  copy('LICENSE',            'build/LICENSE')
+  for file in project.libs()
+    copy(file, file.replace('lib/', 'build/lib/assets/javascripts/'))
   fullPack('build/lib/assets/javascripts/visibility.js')
 
-  exec 'cd build/; gem build visibilityjs.gemspec', (error, message) ->
+  exec "cd build/; gem build #{gem}.gemspec", (error, message) ->
     if error
       process.stderr.write(error.message)
       process.exit(1)
     else
-      fs.mkdirSync('pkg/') unless path.existsSync('pkg/')
-      gem = glob.sync('build/*.gem')[0]
-      copy(gem, gem.replace(/^build\//, 'pkg/'))
+      fs.mkdirsSync('pkg/') unless path.existsSync('pkg/')
+      gemFile = glob.sync('build/*.gem')[0]
+      copy(gemFile, gemFile.replace(/^build\//, 'pkg/'))
       fs.removeSync('build/')
