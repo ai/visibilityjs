@@ -322,10 +322,16 @@ If you need just a files, you can take already minified packages from
    npm install
    ```
 
-3. Run test server:
+3. Run all tests:
 
    ```sh
    ./node_modules/.bin/cake test
+   ```
+
+3. Run test server, to check code in real browsers:
+
+   ```sh
+   ./node_modules/.bin/cake server
    ```
 
 4. Open tests in browser: [localhost:8000].
