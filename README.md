@@ -328,14 +328,14 @@ If you need just a files, you can take already minified packages from
    ./node_modules/.bin/cake test
    ```
 
-3. Run test server, to check code in real browsers:
+4. Run test server, to check code in real browsers:
 
    ```sh
    ./node_modules/.bin/cake server
    ```
 
-4. Open tests in browser: [localhost:8000].
-5. Also you can see real usage example in integration test
+5. Open tests in browser: [localhost:8000].
+6. Also you can see real usage example in integration test
    `test/integration.html`.
 
 [localhost:8000]: http://localhost:8000
