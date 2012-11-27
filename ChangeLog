@@ -1,3 +1,7 @@
+== 0.6.2 (Pioneer 4, american sun)
+* Decrease files size (by compressible code and UnglifyJS 2).
+* Remove unnecessary vendor prefixes from fallback.
+
 == 0.6.1 (Vanguard 2, weather)
 * Remove unnecessary vendor prefixes.
 
