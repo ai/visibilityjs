@@ -167,8 +167,8 @@ task 'min', 'Create minimized version of library', ->
 
   packages = glob.sync('pkg/*.js')
   for file in packages
-    minified = uglify.minify(file)
-    fs.writeFileSync(file, minified.code)
+    min = uglify.minify(file)
+    fs.writeFileSync(file, min.code)
 
 task 'gem', 'Build RubyGem package', ->
   fs.removeSync('build/') if fs.existsSync('build/')
@@ -191,7 +191,7 @@ task 'gem', 'Build RubyGem package', ->
 
   exec "cd build/; gem build #{gem}.gemspec", (error, message) ->
     if error
-      process.stderr.write(error.message)
+      console.error(error.message)
       process.exit(1)
     else
       fs.mkdirsSync('pkg/') unless fs.existsSync('pkg/')
