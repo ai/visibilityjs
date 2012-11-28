@@ -294,13 +294,13 @@ For Ruby on Rails you can use gem for Assets Pipeline.
 
 ### CDN
 
-If you don’t use any assets packaging manager use [CDNJS]. Add to your site:
+If you don’t use any assets packaging manager use [cdnjs]. Add to your site:
 
 ```html
 <script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/0.6.2/visibility.min.js"></script>
 ```
 
-[CDNJS]: http://cdnjs.com/
+[cdnjs]: http://cdnjs.com/
 
 ### Other
 
