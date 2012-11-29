@@ -1,4 +1,5 @@
 fs     = require('fs-extra')
+url    = require('url')
 exec   = require('child_process').exec
 http   = require('http')
 path   = require('path')
@@ -96,23 +97,25 @@ mocha =
 
 task 'server', 'Run test server', ->
   server = http.createServer (req, res) ->
-    if req.url == '/'
+    pathname = url.parse(req.url).pathname
+
+    if pathname == '/'
       res.writeHead 200, 'Content-Type': 'text/html'
       res.write mocha.html()
 
-    else if req.url == '/style.css'
+    else if pathname == '/style.css'
       res.writeHead 200, 'Content-Type': 'text/css'
       res.write mocha.style()
 
-    else if req.url == '/integration'
+    else if pathname == '/integration'
       res.writeHead 200, 'Content-Type': 'text/html'
       res.write fs.readFileSync('test/integration.html')
 
-    else if fs.existsSync('.' + req.url)
-      file = fs.readFileSync('.' + req.url).toString()
-      if req.url.match(/\.coffee$/)
+    else if fs.existsSync('.' + pathname)
+      file = fs.readFileSync('.' + pathname).toString()
+      if pathname.match(/\.coffee$/)
         file = coffee.compile(file)
-      if req.url.match(/\.(js|coffee)$/)
+      if pathname.match(/\.(js|coffee)$/)
         res.writeHead 200, 'Content-Type': 'application/javascript'
       res.write file
 
