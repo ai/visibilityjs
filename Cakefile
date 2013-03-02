@@ -24,7 +24,7 @@ project =
       map( (i) -> "test/#{i}" )
 
   files: ->
-    fs.readdirSync('lib/').map( (i) -> "lib/#{i}" )
+    fs.readdirSync('lib/').map( (i) -> "lib/#{i}" ).sort()
 
   libs: ->
     @files().filter (file) -> !file.match(/fallback/)
