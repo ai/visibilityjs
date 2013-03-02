@@ -1,4 +1,4 @@
-window   = global;
+window = global;
 window.addEventListener = function () { };
 document = {
   createElement:    function () { },

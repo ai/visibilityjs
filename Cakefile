@@ -23,8 +23,11 @@ project =
       filter( (i) -> i.match /\.coffee$/ ).
       map( (i) -> "test/#{i}" )
 
-  libs: ->
+  files: ->
     fs.readdirSync('lib/').map( (i) -> "lib/#{i}" )
+
+  libs: ->
+    @files().filter (file) -> !file.match(/fallback/)
 
   title: ->
     @name()[0].toUpperCase() + @name()[1..-1]
@@ -139,7 +142,7 @@ task 'test', 'Run tests in node', ->
   command = 'node_modules/.bin/mocha '
   for name, value of options
     name = name.replace /[A-Z]/, (letter) -> '-' + letter.toLowerCase()
-    command += "--#{name} " + if value == true then '' else " #{value} "
+    command += "--#{name} " + if value == true then '' else "#{value} "
   command += files.join(' ')
   exec command, (error, stdout, stderr) ->
     console.log(stdout)   if stdout?
@@ -163,7 +166,7 @@ task 'min', 'Create minimized version of library', ->
   copy = require('fs-extra/lib/copy').copyFileSync
 
   fs.mkdirsSync('pkg/') unless fs.existsSync('pkg/')
-  for file in project.libs()
+  for file in project.files()
     name = file.replace(/^lib\//, '').replace(/\.js$/, '')
     copy(file, "pkg/#{name}-#{project.version()}.min.js")
   fullPack("pkg/visibility-#{project.version()}.min.js")
@@ -188,7 +191,7 @@ task 'gem', 'Build RubyGem package', ->
   copy('README.md',          'build/README.md')
   copy('ChangeLog',          'build/ChangeLog')
   copy('LICENSE',            'build/LICENSE')
-  for file in project.libs()
+  for file in project.files()
     copy(file, file.replace('lib/', 'build/lib/assets/javascripts/'))
   fullPack('build/lib/assets/javascripts/visibility.js')
 
