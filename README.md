@@ -326,7 +326,7 @@ If you need just a files, you can take already minified packages from
 3. Run all tests:
 
    ```sh
-   ./node_modules/.bin/cake test
+   npm test
    ```
 
 4. Run test server, to check code in real browsers:
