@@ -31,7 +31,7 @@ Sponsored by [Evil Martians].
 [Page Visibility API]: http://www.w3.org/TR/2011/WD-page-visibility-20110602/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
 [MozVisibility]:       https://github.com/private-face/mozvisibility
-[natively supported]:  http://caniuse.com/#feat=pagevisibility
+[natively supported]:  http://caniuse.com/pagevisibility
 [Evil Martians]:       http://evilmartians.com/
 
 ## Translations
