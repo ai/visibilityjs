@@ -213,8 +213,8 @@ describe 'Visibility', ->
         Visibility._prefix().should.eql('')
 
       it 'detects vendor prefix', ->
-        document.mozVisibilityState = 'visible'
-        Visibility._prefix().should.eql('moz')
+        document.webkitVisibilityState = 'visible'
+        Visibility._prefix().should.eql('webkit')
 
       it 'caches vendor prefix', ->
         document.visibilityState = 'visible'
