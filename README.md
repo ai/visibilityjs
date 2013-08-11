@@ -4,7 +4,7 @@ Visibility.js allows you to determine whether your web page is visible to a
 user, is hidden in background tab or is prerendering. It allows you to use
 the page visibility state in JavaScript logic and improve browser performance
 by disabling unnecessary timers and AJAX requests, or improve user interface
-experience (for example, by stopping video playback or slideshow when user
+experience (for example, by stopping video playback or slideshow when user
 switches to another browser tab).
 
 Moreover, you can detect if the browser is just [prerendering] the page while
@@ -107,7 +107,7 @@ visible now, it will run `callback`, otherwise it will wait until state changes
 to `visible`, and then run `callback`.
 
 For example, let’s show an animated notification only when the page is visible,
-so if an user opens a page in the background, the animation will delay until
+so if an user opens a page in the background, the animation will delay until
 the page becomes visible, i.e. until the user has switched
 to a tab with the page:
 
@@ -165,7 +165,7 @@ if( Visibility.isSupported() ) {
 can be added in the future, so for most cases a simpler `Visibility.hidden()`
 method can be used. It will return `true` if the page is hidden by any reason.
 For example, while prerendering, `Visibility.state()` will return `"prerender"`,
-but `Visibility.hidden()` will return `true`.
+but `Visibility.hidden()` will return `true`.
 
 This code will aid in collecting page visibility statistics:
 
