@@ -28,9 +28,8 @@ lose focus, but still visible for user).
 
 Sponsored by [Evil Martians].
 
-[Page Visibility API]: http://www.w3.org/TR/2011/WD-page-visibility-20110602/
+[Page Visibility API]: http://www.w3.org/TR/page-visibility/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
-[MozVisibility]:       https://github.com/private-face/mozvisibility
 [natively supported]:  http://caniuse.com/pagevisibility
 [Evil Martians]:       http://evilmartians.com/
 
@@ -283,20 +282,17 @@ For Ruby on Rails you can use gem for Assets Pipeline.
 
 ### CDN
 
-If you don’t use any assets packaging manager use [cdnjs]. Add to your site:
+If you don’t use any assets packaging manager use [cdnjs](http://cdnjs.com/).
+Add to your site:
 
 ```html
 <script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/0.6.2/visibility.min.js"></script>
 ```
 
-[cdnjs]: http://cdnjs.com/
-
 ### Other
 
 If you need just a files, you can take already minified packages from
-[github.com/ai/visibility.js/downloads].
-
-[github.com/ai/visibility.js/downloads]: https://github.com/ai/visibility.js/downloads
+[github.com/ai/visibility.js/releases](https://github.com/ai/visibility.js/releases).
 
 ## Contributing
 
@@ -324,8 +320,6 @@ If you need just a files, you can take already minified packages from
    ./node_modules/.bin/cake server
    ```
 
-5. Open tests in browser: [localhost:8000].
+5. Open tests in browser: [localhost:8000](http://localhost:8000).
 6. Also you can see real usage example in integration test
    `test/integration.html`.
-
-[localhost:8000]: http://localhost:8000
