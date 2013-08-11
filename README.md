@@ -1,4 +1,4 @@
-# Visibility.js: a wrapper for the Page Visibility API
+# Visibility.js: a wrapper for the Page Visibility API
 
 Visibility.js allows you to determine whether your web page is visible to a
 user, is hidden in background tab or is prerendering. It allows you to use
