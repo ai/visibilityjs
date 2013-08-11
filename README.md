@@ -21,10 +21,10 @@ actually supported in the browser as, if it does not, the library will just
 assume that the page is visible all the time, and your logic will still work
 correctly, albeit less effective in some cases.
 
-Page Visibility API is [natively supported] by Google Chrome 13, Firefox 10,
-Opera 12.10 and IE 10. For old browsers you can use `lib/visibility.fallback.js`
-with focus/blur hack (note that this hack have issue, that document become
-to be hidden, when browser just lose focus, but still visible for user).
+Page Visibility API is [natively supported] by all browsers. For old browsers
+you can use `lib/visibility.fallback.js` with focus/blur hack (note that this
+hack have issue, that document become to be hidden, when browser just
+lose focus, but still visible for user).
 
 Sponsored by [Evil Martians].
 
