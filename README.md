@@ -1,20 +1,20 @@
 # Visibility.js – a wrapper for the Page Visibility API
 
 Visibility.js allows you to determine whether your web page is visible to a
-user, is hidden in background tab or is prerendering. It allows you to use the
-page visibility state in JavaScript logic and improve browser performance by
-disabling unnecessary timers and AJAX requests, or improve user interface
-experience (for example, by stopping video playback or slideshow when user
+user, is hidden in background tab or is prerendering. It allows you to use
+the page visibility state in JavaScript logic and improve browser performance
+by disabling unnecessary timers and AJAX requests, or improve user interface
+experience (for example, by stopping video playback or slideshow when user
 switches to another browser tab).
 
 Moreover, you can detect if the browser is just [prerendering] the page while
-the user has not still opened the link, and don’t count this as a visit in your
+the user has not still opened the link, and don’t count this as a visit in your
 analytics module, or do not run heavy calculations or other actions which will
 disable the prerendering.
 
-This library is a wrapper of the [Page Visibility API]. It eases usage of the
-API by hiding vendor-specific property prefixes and adding some high-level
-functions.
+This library is a wrapper of the [Page Visibility API]. It eases usage
+of the API by hiding vendor-specific property prefixes and adding some
+high-level functions.
 
 In most cases you don’t need to check whether the Page Visibility API is
 actually supported in the browser as, if it does not, the library will just
@@ -23,7 +23,7 @@ correctly, albeit less effective in some cases.
 
 Page Visibility API is [natively supported] by all browsers. For old browsers
 you can use `lib/visibility.fallback.js` with focus/blur hack (note that this
-hack have issue, that document become to be hidden, when browser just
+hack have issue, that document become to be hidden, when browser just
 lose focus, but still visible for user).
 
 Sponsored by [Evil Martians].
@@ -46,12 +46,12 @@ Currently the Page Visibility API supports three visibility states:
 * `visible`: user has opened the page and works within it.
 * `hidden`: user has switched to another tab or minimized browser window.
 * `prerender`: browser is just prerendering a page which may possibly be opened
-   by the user to make the apparent loading time lesser.
+   by the user to make the apparent loading time lesser.
 
 ## Timers
 
 The main use case for this library is to enable some of the times only when
-content is visible to the user, i.e. the ones animating a countdown animation.
+content is visible to the user, i.e. the ones animating a countdown animation.
 
 `Visibility.every(interval, callback)` is similar to
 `setInterval(callback, interval)`, but calls `callback` every `interval` ms only
@@ -64,7 +64,7 @@ Visibility.every(1000, function () {
 ```
 
 You can provide an additional interval which will be used when the page
-is hidden. In next example, a check for inbox updates will be run every 1 minute
+is hidden. In next example, a check for inbox updates will be run every 1 minute
 for a visible page and every 5 minutes for a hidden one:
 
 ```js
@@ -78,7 +78,7 @@ Note that the callback will also be executed on every `hidden`->`visible` state
 change to update old contents.
 
 `Visibility.every` returns a timer identifier, much like the `setTimeout`
-function. It cannot be passed to `clearInterval`, through, and you should use
+function. It cannot be passed to `clearInterval`, through, and you should use
 `Visibility.stop(id)` to stop the timer.
 
 ```js
@@ -92,7 +92,7 @@ $('.stopSlideshow').click(function () {
 ```
 
 If the browser does not support the Page Visibility API, `Visibility.every` will
-fall back to `setInterval`, and `callback` will be run every `interval` ms for
+fall back to `setInterval`, and `callback` will be run every `interval` ms for
 both the hidden and visible pages.
 
 ## Initializers
@@ -107,9 +107,9 @@ visible now, it will run `callback`, otherwise it will wait until state changes
 to `visible`, and then run `callback`.
 
 For example, let’s show an animated notification only when the page is visible,
-so if an user opens a page in the background, the animation will delay until
-the page becomes visible, i.e. until the user has switched to a tab with
-the page:
+so if an user opens a page in the background, the animation will delay until
+the page becomes visible, i.e. until the user has switched
+to a tab with the page:
 
 ```js
 Visibility.onVisible(function () {
@@ -117,14 +117,14 @@ Visibility.onVisible(function () {
 });
 ```
 
-If a browser doesn’t support Page Visibility API, `Visibility.onVisible` will
-run the `callback` immediately.
+If a browser doesn’t support Page Visibility API, `Visibility.onVisible`
+will run the `callback` immediately.
 
 ### Wait until the page is opened after prerendering
 
-A web developer can hint a browser (using Prerendering API) that an user is
-likely to click on some link (i.e. on a “Next” link in a multi-page article),
-and the browser then may prefetch and prerender the page, so that the user will
+A web developer can hint a browser (using Prerendering API) that an user
+is likely to click on some link (i.e. on a “Next” link in a multi-page article),
+and the browser then may prefetch and prerender the page, so that the user will
 not wait after actually going via the like.
 
 But you may not want to count the browser prerendering a page as a visitor in
@@ -149,7 +149,7 @@ If the browser doesn’t support Page Visibility API,
 ## Low-level API
 
 In some cases you may need more low-level methods. For example, you may want to
-count the time user has viewed the page in foreground and time it has stayed in
+count the time user has viewed the page in foreground and time it has stayed in
 background.
 
 `Visibility.isSupported()` will return `true` if browser supports the
@@ -163,7 +163,7 @@ if( Visibility.isSupported() ) {
 
 `Visibility.state()` will return a string with visibility state. More states
 can be added in the future, so for most cases a simpler `Visibility.hidden()`
-method can be used. It will return `true` if the page is hidden by any reason.
+method can be used. It will return `true` if the page is hidden by any reason.
 For example, while prerendering, `Visibility.state()` will return `"prerender"`,
 but `Visibility.hidden()` will return `true`.
 
@@ -196,7 +196,7 @@ $(document).load(function () {
 ```
 
 Using `Visibility.change(callback)` you can listen to visibility state changing
-events. The `callback` takes 2 arguments: an event object and a state name.
+events. The `callback` takes 2 arguments: an event object and a state name.
 
 Let’s collect some statistics with this evented approach:
 
@@ -222,7 +222,7 @@ VideoPlayer.onFinish(function () {
 ```
 
 Methods `onVisible` and `afterPrerendering` will also return listener ID,
-if they wait visibility state changes. If they execute callback immediately,
+if they wait visibility state changes. If they execute callback immediately,
 they return `true` if Page Visibility API is supported and `false`
 if they can’t detect visibility state.
 
