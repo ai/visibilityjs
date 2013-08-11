@@ -76,16 +76,6 @@ Visibility.every(minute, 5 * minute, function () {
 Note that the callback will also be executed on every `hidden`->`visible` state
 change to update old contents.
 
-A syntactic sugar for specifying time intervals is supported when
-[jQuery Chrono plugin] is included before Visibility.js. It can be used like
-this:
-
-```js
-Visibility.every('minute', '5 minutes', function () {
-    checkNewMails();
-});
-```
-
 `Visibility.every` returns a timer identifier, much like the `setTimeout`
 function. It cannot be passed to `clearInterval`, through, and you should use
 `Visibility.stop(id)` to stop the timer.
@@ -103,8 +93,6 @@ $('.stopSlideshow').click(function () {
 If the browser does not support the Page Visibility API, `Visibility.every` will
 fall back to `setInterval`, and `callback` will be run every `interval` ms for
 both the hidden and visible pages.
-
-[jQuery Chrono plugin]: https://github.com/avk/jQuery-Chrono
 
 ## Initializers
 

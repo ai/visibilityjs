@@ -10,13 +10,16 @@ describe 'Visibility', ->
     Visibility._lastTimer         = -1
     Visibility._timers            = { }
     Visibility._hiddenBefore      = false
-    Visibility._setInterval       = ->
     Visibility._doc = document    = { addEventListener: -> }
-    for method of Visibility
-      Visibility[method]?.restore?()
+
+    sinon.stub window, 'setInterval', -> 102
 
   afterEach ->
     delete window.jQuery
+
+    for method of Visibility
+      Visibility[method]?.restore?()
+    window.setInterval.restore?()
 
   describe 'Core', ->
 
@@ -414,34 +417,10 @@ describe 'Visibility', ->
         Visibility._initTimers()
         Visibility.change.should.have.been.calledTwice
 
-      it 'autodetects the function to use as _setInterval', ->
-        Visibility._initTimers()
-        Visibility._setInterval.should.have.eql(Visibility._originalInterval)
-
-        window.jQuery = { every: -> }
-        Visibility._timersInitialized = false
-        Visibility._initTimers()
-        Visibility._setInterval.should.eql(Visibility._chronoInterval)
-
-    describe '._originalInterval()', ->
-
-      afterEach ->
-        window.setInterval.restore?()
-
       it 'calls DOM setInterval from internal method', ->
-        sinon.stub window, 'setInterval', -> 102
         callback = ->
-        Visibility._originalInterval(callback, 1000).should.eql(102)
+        Visibility._setInterval(callback, 1000).should.eql(102)
         window.setInterval.should.have.been.calledWith(callback, 1000)
-
-    describe '._chronoInterval()', ->
-
-      it 'calls jQuery Chrono plugin from internal method', ->
-        window.jQuery = { every: -> 102 }
-        sinon.spy(jQuery, 'every')
-        callback = ->
-        Visibility._chronoInterval(callback, '1 sec').should.eql(102)
-        jQuery.every.should.have.been.calledWith('1 sec', callback)
 
     describe '._stopTimer()', ->
 
