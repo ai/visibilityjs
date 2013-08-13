@@ -286,7 +286,7 @@ If you don’t use any assets packaging manager use [cdnjs](http://cdnjs.com/).
 Add to your site:
 
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/0.6.2/visibility.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/1.0.0/visibility.min.js"></script>
 ```
 
 ### Other
