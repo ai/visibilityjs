@@ -129,25 +129,6 @@ task 'server', 'Run test server', ->
   server.listen 8000
   console.log('Open http://localhost:8000/')
 
-task 'test', 'Run tests in node', ->
-  files   = ['test/mocha.js'].concat(project.libs()).concat(project.tests())
-  options =
-    ui:         'bdd'
-    reporter:   'spec'
-    compilers:  'coffee:coffee-script'
-    ignoreLeaks: true
-    colors:      true
-
-  command = 'node_modules/.bin/mocha '
-  for name, value of options
-    name = name.replace /[A-Z]/, (letter) -> '-' + letter.toLowerCase()
-    command += "--#{name} " + if value == true then '' else "#{value} "
-  command += files.join(' ')
-  exec command, (error, stdout, stderr) ->
-    console.log(stdout)   if stdout?
-    console.error(stderr) if stderr?
-    process.exit(1)       if error
-
 task 'clean', 'Remove all generated files', ->
   fs.removeSync('build/') if fs.existsSync('build/')
   fs.removeSync('pkg/')   if fs.existsSync('pkg/')

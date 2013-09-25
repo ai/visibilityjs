@@ -11,6 +11,6 @@
     "uglify-js":     "2.4.0"
   },
   "scripts": {
-    "test": "cake test"
+    "test": "mocha --reporter spec --require ./test/mocha --require ./lib/visibility.core --require ./lib/visibility.timers --compilers coffee:coffee-script"
   }
 }
