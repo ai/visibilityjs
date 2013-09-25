@@ -3,7 +3,6 @@ url    = require('url')
 exec   = require('child_process').exec
 http   = require('http')
 path   = require('path')
-glob   = require('glob')
 coffee = require('coffee-script')
 uglify = require('uglify-js')
 
@@ -171,10 +170,10 @@ task 'min', 'Create minimized version of library', ->
     copy(file, "pkg/#{name}-#{project.version()}.min.js")
   fullPack("pkg/visibility-#{project.version()}.min.js")
 
-  packages = glob.sync('pkg/*.js')
+  packages = fs.readdirSync('pkg/').filter( (i) -> i.match(/\.js$/) )
   for file in packages
-    min = uglify.minify(file)
-    fs.writeFileSync(file, min.code)
+    min = uglify.minify('pkg/' + file)
+    fs.writeFileSync('pkg/' + file, min.code)
 
 task 'gem', 'Build RubyGem package', ->
   fs.removeSync('build/') if fs.existsSync('build/')
@@ -201,6 +200,6 @@ task 'gem', 'Build RubyGem package', ->
       process.exit(1)
     else
       fs.mkdirsSync('pkg/') unless fs.existsSync('pkg/')
-      gemFile = glob.sync('build/*.gem')[0]
-      copy(gemFile, gemFile.replace(/^build\//, 'pkg/'))
+      gemFile = fs.readdirSync('build/').filter( (i) -> i.match(/\.gem$/) )[0]
+      copy('build/' + gemFile, 'pkg/' + gemFile)
       fs.removeSync('build/')
