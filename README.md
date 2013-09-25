@@ -1,6 +1,8 @@
 # Visibility.js
 
-Visibility.js is a wrapper for the Page Visibility API.
+Visibility.js is a wrapper for the [Page Visibility API]. It eases usage
+of the API by hiding vendor-specific property prefixes and adding some
+high-level functions.
 
 Page Visibility API allows you to determine whether your web page is visible to
 a user, is hidden in background tab or is prerendering. It allows you to use
@@ -13,15 +15,6 @@ Moreover, you can detect if the browser is just [prerendering] the page while
 the user has not still opened the link, and don’t count this as a visit in your
 analytics module, or do not run heavy calculations or other actions which will
 disable the prerendering.
-
-This library is a wrapper of the [Page Visibility API]. It eases usage
-of the API by hiding vendor-specific property prefixes and adding some
-high-level functions.
-
-In most cases you don’t need to check whether the Page Visibility API is
-actually supported in the browser as, if it does not, the library will just
-assume that the page is visible all the time, and your logic will still work
-correctly, albeit less effective in some cases.
 
 Page Visibility API is [natively supported] by all browsers. For old browsers
 you can use `lib/visibility.fallback.js` with focus/blur hack (note that this
