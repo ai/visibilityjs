@@ -1,5 +1,7 @@
 # Visibility.js
 
+<img align="right" width="100" src="http://ai.github.io/visibility.js/logo.svg" title="Visibility.js logo by Eugenia Tuchapets">
+
 Visibility.js is a wrapper for the [Page Visibility API]. It eases usage
 of the API by hiding vendor-specific property prefixes and adding some
 high-level functions.
