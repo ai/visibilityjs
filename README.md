@@ -2,12 +2,10 @@
 
 <img align="right" width="100" src="http://ai.github.io/visibility.js/logo.svg" title="Visibility.js logo by Eugenia Tuchapets">
 
-Visibility.js is a wrapper for the [Page Visibility API]. It eases usage
-of the API by hiding vendor-specific property prefixes and adding some
-high-level functions.
+Visibility.js is a wrapper for the [Page Visibility API]. It hide vendor prefixes and add some high-level functions.
 
 Page Visibility API allows you to determine whether your web page is visible to
-a user, is hidden in background tab or is prerendering. It allows you to use
+a user, is hidden in background tab or is prerendering. It allows you to use
 the page visibility state in JavaScript logic and improve browser performance
 by disabling unnecessary timers and AJAX requests, or improve user interface
 experience (for example, by stopping video playback or slideshow when user
