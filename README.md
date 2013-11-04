@@ -5,7 +5,7 @@
 Visibility.js is a wrapper for the [Page Visibility API]. It hides vendor prefixes and adds high level functions.
 
 Page Visibility API allows you to determine whether your web page is visible to
-a user, is hidden in background tab or is prerendering. It allows you to use
+a user, is hidden in background tab or is prerendering. It allows you to use
 the page visibility state in JavaScript logic and improve browser performance
 by disabling unnecessary timers and AJAX requests, or improve user interface
 experience (for example, by stopping video playback or slideshow when user
