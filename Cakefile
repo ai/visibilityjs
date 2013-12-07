@@ -143,7 +143,7 @@ fullPack = (file) ->
   fs.writeFileSync(file, core + timers)
 
 task 'min', 'Create minimized version of library', ->
-  copy = require('fs-extra/lib/copy').copyFileSync
+  copy = require('fs-extra/lib/copy').copySync
 
   fs.mkdirsSync('pkg/') unless fs.existsSync('pkg/')
   for file in project.files()
@@ -160,7 +160,7 @@ task 'gem', 'Build RubyGem package', ->
   fs.removeSync('build/') if fs.existsSync('build/')
   fs.mkdirsSync('build/lib/assets/javascripts/')
 
-  copy = require('fs-extra/lib/copy').copyFileSync
+  copy = require('fs-extra/lib/copy').copySync
   gem  = project.name().replace('.', '')
 
   gemspec = fs.readFileSync("gem/#{gem}.gemspec").toString()
