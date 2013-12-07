@@ -1,5 +1,5 @@
 {
-  "name": "visibility.js",
+  "name": "visibilityjs",
   "version": "1.0.0",
   "devDependencies": {
     "coffee-script": "1.6.3",

@@ -1,0 +1,23 @@
+{
+  "name": "visibilityjs",
+  "version": "1.0.0",
+  "homepage": "https://github.com/ai/visibility.js",
+  "authors": [
+    {
+      "name": "Andrey A.I. Sitnik",
+      "email": "<andrey@sitnik.ru>"
+    }
+  ],
+  "description": "Wrapper for the Page Visibility API",
+  "license": "MIT",
+  "main": [
+    "lib/visibility.core.js",
+    "lib/visibility.timers.js"
+  ],
+  "ignore": [
+    "package.json",
+    "Cakefile",
+    "gem",
+    "test"
+  ]
+}
