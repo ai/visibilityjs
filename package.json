@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "devDependencies": {
     "coffee-script": "1.6.3",
-    "mocha":         "1.15.1",
+    "mocha":         "1.16.2",
     "chai":          "1.8.1",
     "sinon":         "1.7.3",
     "sinon-chai":    "2.4.0",
     "fs-extra":      "0.8.1",
-    "uglify-js":     "2.4.6"
+    "uglify-js":     "2.4.8"
   },
   "scripts": {
     "test": "mocha"
