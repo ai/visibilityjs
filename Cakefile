@@ -163,11 +163,11 @@ task 'gem', 'Build RubyGem package', ->
   copy = require('fs-extra/lib/copy').copySync
   gem  = project.name().replace('.', '')
 
-  gemspec = fs.readFileSync("gem/#{gem}.gemspec").toString()
+  gemspec = fs.readFileSync("#{gem}.gemspec").toString()
   gemspec = gemspec.replace('VERSION', "'#{project.version()}'")
   fs.writeFileSync("build/#{gem}.gemspec", gemspec)
 
-  copy("gem/#{gem}.rb",      "build/lib/#{gem}.rb")
+  copy("ruby/#{gem}.rb",     "build/lib/#{gem}.rb")
   copy('README.md',          'build/README.md')
   copy('ChangeLog',          'build/ChangeLog')
   copy('LICENSE',            'build/LICENSE')
