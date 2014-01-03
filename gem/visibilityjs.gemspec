@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'visibilityjs'
@@ -20,8 +18,8 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ['LICENSE', 'README.md', 'ChangeLog']
   s.require_path     = 'lib'
 
-  s.authors  = ['Andrey "A.I" Sitnik']
-  s.email    = ['andrey@sitnik.ru']
+  s.author   = 'Andrey Sitnik'
+  s.email    = 'andrey@sitnik.ru'
   s.homepage = 'https://github.com/ai/visibility.js'
   s.license  = 'MIT'
 
