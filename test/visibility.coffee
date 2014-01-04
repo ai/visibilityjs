@@ -1,5 +1,6 @@
 describe 'Visibility', ->
   document = null
+  clock    = null
 
   beforeEach ->
     Visibility._cached    = null
@@ -295,6 +296,12 @@ describe 'Visibility', ->
 
     describe '.every()', ->
 
+      before ->
+        @clock = sinon.useFakeTimers()
+
+      after ->
+        @clock.restore()
+
       it 'creates a new timer from every method', ->
         Visibility._cached    = 'webkit'
         document.webkitHidden = true
@@ -326,8 +333,25 @@ describe 'Visibility', ->
         callback = ->
         Visibility.every(1, 10, callback)
 
-        window.setInterval.should.have.been.calledWith(callback, 1)
+        window.setInterval.should.have.been.calledWith(sinon.match.func, 1)
         Visibility._listen.should.not.have.been.called
+
+      it 'stores last called time', ->
+        runner = null
+        window.setInterval.restore()
+        sinon.stub window, 'setInterval', (callback, ms) -> runner = callback
+
+        now   = new Date()
+        Visibility.every(1, 10, ->)
+
+        Visibility._timers[0].should.not.have.property('last')
+
+        runner()
+        Visibility._timers[0].last.should.eql(new Date(0))
+
+        @clock.tick(100)
+        runner()
+        Visibility._timers[0].last.should.eql(new Date(100))
 
       it 'executes timers', ->
         Visibility._cached    = 'webkit'
@@ -347,7 +371,7 @@ describe 'Visibility', ->
         Visibility._run(1, false)
         Visibility._timers[1].id.should.eql(101)
         window.setInterval.should.have.been.calledOnce
-        window.setInterval.should.have.been.calledWith(callback1, 10)
+        window.setInterval.should.have.been.calledWith(sinon.match.func, 10)
         callback1.should.not.have.been.called
 
         Visibility._run(2, false)
@@ -361,7 +385,7 @@ describe 'Visibility', ->
         Visibility._run(1, true)
         Visibility._timers[1].id.should.eql(102)
         window.setInterval.callCount.should.eql(2)
-        window.setInterval.should.be.calledWith(callback1, 1)
+        window.setInterval.should.be.calledWith(sinon.match.func, 1)
         callback1.should.have.been.calledOn(window)
 
       it 'stops and run timers on state changes', ->
@@ -401,6 +425,34 @@ describe 'Visibility', ->
         Visibility._run.callCount.should.eql(4)
         Visibility._run.args[2].should.eql(['1', false])
         Visibility._run.args[3].should.eql(['3', false])
+
+      it 'prevents too fast calls on visibility change', ->
+        window.setInterval.restore()
+        Visibility._cached    = 'webkit'
+        document.webkitHidden = false
+
+        callback = sinon.spy()
+        Visibility.every(1000, callback)
+
+        callback.should.have.not.been.called
+
+        @clock.tick(1100)
+        callback.should.have.been.calledOnce
+
+        document.webkitHidden = true
+        Visibility._change()
+        callback.should.have.been.calledOnce
+
+        @clock.tick(400)
+        document.webkitHidden = false
+        Visibility._change()
+        callback.should.have.been.calledOnce
+
+        @clock.tick(500)
+        callback.should.have.been.calledTwice
+
+        @clock.tick(1000)
+        callback.should.have.been.calledThrice
 
     describe '._time()', ->
 
