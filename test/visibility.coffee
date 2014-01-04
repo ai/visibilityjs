@@ -322,19 +322,20 @@ describe 'Visibility', ->
 
       it 'sets visible timer from every method without API', ->
         Visibility._time()
-        sinon.stub(Visibility, '_setInterval')
         sinon.stub(Visibility, '_listen')
         callback = ->
         Visibility.every(1, 10, callback)
 
-        Visibility._setInterval.should.have.been.calledWith(callback, 1)
+        window.setInterval.should.have.been.calledWith(callback, 1)
         Visibility._listen.should.not.have.been.called
 
       it 'executes timers', ->
         Visibility._cached    = 'webkit'
         document.webkitHidden = true
         lastID = 100
-        sinon.stub Visibility, '_setInterval', -> lastID += 1
+
+        window.setInterval.restore()
+        sinon.stub window, 'setInterval', -> lastID += 1
 
         callback1 = sinon.spy()
         callback2 = sinon.spy()
@@ -345,8 +346,8 @@ describe 'Visibility', ->
 
         Visibility._run(1, false)
         Visibility._timers[1].id.should.eql(101)
-        Visibility._setInterval.should.have.been.calledOnce
-        Visibility._setInterval.should.have.been.calledWith(callback1, 10)
+        window.setInterval.should.have.been.calledOnce
+        window.setInterval.should.have.been.calledWith(callback1, 10)
         callback1.should.not.have.been.called
 
         Visibility._run(2, false)
@@ -354,13 +355,13 @@ describe 'Visibility', ->
           interval:       2
           callback:       callback2
           hiddenInterval: null
-        Visibility._setInterval.should.have.been.calledOnce
+        window.setInterval.should.have.been.calledOnce
 
         document.webkitHidden = false
         Visibility._run(1, true)
         Visibility._timers[1].id.should.eql(102)
-        Visibility._setInterval.callCount.should.eql(2)
-        Visibility._setInterval.should.be.calledWith(callback1, 1)
+        window.setInterval.callCount.should.eql(2)
+        window.setInterval.should.be.calledWith(callback1, 1)
         callback1.should.have.been.calledOn(window)
 
       it 'stops and run timers on state changes', ->
@@ -416,11 +417,6 @@ describe 'Visibility', ->
         Visibility._timed = false
         Visibility._time()
         Visibility.change.should.have.been.calledTwice
-
-      it 'calls DOM setInterval from internal method', ->
-        callback = ->
-        Visibility._setInterval(callback, 1000).should.eql(102)
-        window.setInterval.should.have.been.calledWith(callback, 1000)
 
     describe '._stop()', ->
 

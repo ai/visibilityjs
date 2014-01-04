@@ -71,7 +71,7 @@ Visibility.every(minute, 5 * minute, function () {
 Note that the callback will also be executed on every `hidden`->`visible` state
 change to update old contents.
 
-`Visibility.every` returns a timer identifier, much like the `setTimeout`
+`Visibility.every` returns a timer identifier, much like the `setInterval`
 function. It cannot be passed to `clearInterval`, through, and you should use
 `Visibility.stop(id)` to stop the timer.
 
@@ -239,7 +239,7 @@ notification.onOutOfDate(function () {
 Visibility.js is shipped with 4 files:
 
 * `visibility.core` – core module.
-* `visibility.timers` – `every` and `stop` methods to set `setTimeout` depend
+* `visibility.timers` – `every` and `stop` methods to set `setInterval` depend
   on visibility state.
 * `visibility` – `visibility.core` and `visibility.timers` together.
 * `visibility.fallback` – fallback for browser without Page Visibility API.
