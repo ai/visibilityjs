@@ -310,8 +310,8 @@ describe 'Visibility', ->
         Visibility._lastTimer.should.eql(id2)
 
         right = { }
-        right[id1] = { interval: 1, hiddenInterval: 10,   callback: callback1 }
-        right[id2] = { interval: 2, hiddenInterval: null, callback: callback2 }
+        right[id1] = { visible: 1, hidden: 10,   callback: callback1 }
+        right[id2] = { visible: 2, hidden: null, callback: callback2 }
         Visibility._timers.should.eql(right)
 
         Visibility._run.should.have.been.calledTwice
@@ -341,8 +341,8 @@ describe 'Visibility', ->
         callback2 = sinon.spy()
 
         Visibility._timers =
-          1: { interval: 1, hiddenInterval: 10,   callback: callback1 }
-          2: { interval: 2, hiddenInterval: null, callback: callback2 }
+          1: { visible: 1, hidden: 10,   callback: callback1 }
+          2: { visible: 2, hidden: null, callback: callback2 }
 
         Visibility._run(1, false)
         Visibility._timers[1].id.should.eql(101)
@@ -352,9 +352,9 @@ describe 'Visibility', ->
 
         Visibility._run(2, false)
         Visibility._timers[2].should.eql
-          interval:       2
-          callback:       callback2
-          hiddenInterval: null
+          visible:  2
+          callback: callback2
+          hidden:   null
         window.setInterval.should.have.been.calledOnce
 
         document.webkitHidden = false
@@ -372,8 +372,8 @@ describe 'Visibility', ->
         sinon.stub(Visibility, '_run')
         callback = sinon.spy
         Visibility._timers =
-          1: { interval: 1, hiddenInterval: 10,   callback: callback }
-          3: { interval: 2, hiddenInterval: null, callback: callback }
+          1: { visible: 1, hidden: 10,   callback: callback }
+          3: { visible: 2, hidden: null, callback: callback }
         Visibility._time()
 
         Visibility._change()
