@@ -192,7 +192,7 @@ $(document).load(function () {
 Using `Visibility.change(callback)` you can listen to visibility state changing
 events. The `callback` takes 2 arguments: an event object and a state name.
 
-Let’s collect some statistics with this evented approach:
+Let’s collect some statistics with this events approach:
 
 ```js
 Visibility.change(function (e, state) {
@@ -245,6 +245,14 @@ Visibility.js is shipped with 4 files:
 * `visibility.fallback` – fallback for browser without Page Visibility API.
   It use document `focus`/`blur` events, so document become to be hidden,
   when browser just lose focus, but still visible for user.
+
+### Bower
+
+Visibility.js is available by Bower package manager:
+
+```
+bower install --save visibilityjs
+```
 
 ### Ruby on Rails
 
