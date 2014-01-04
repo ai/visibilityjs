@@ -24,10 +24,17 @@
                 document.title = state;
             });
 
-            var sec = 0;
+            var sec = 1;
             var counter = document.getElementById('counter');
             Visibility.every(1000, function () {
                 counter.innerHTML = sec++;
+            });
+
+            Visibility.every(5000, function () {
+                counter.style.color = 'green';
+                setTimeout(function () {
+                    counter.style.color = 'black';
+                }, 1000)
             });
         </script>
     </body>
