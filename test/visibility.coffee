@@ -2,15 +2,15 @@ describe 'Visibility', ->
   document = null
 
   beforeEach ->
-    Visibility._chechedPrefix     = null
-    Visibility._listening         = false
-    Visibility._timersInitialized = false
-    Visibility._lastCallback      = -1
-    Visibility._callbacks         = []
-    Visibility._lastTimer         = -1
-    Visibility._timers            = { }
-    Visibility._hiddenBefore      = false
-    Visibility._doc = document    = { addEventListener: -> }
+    Visibility._cached    = null
+    Visibility._enable    = false
+    Visibility._timed     = false
+    Visibility._lastId    = -1
+    Visibility._callbacks = []
+    Visibility._lastTimer = -1
+    Visibility._timers    = { }
+    Visibility._wasHidden = false
+    Visibility._doc = document = { addEventListener: -> }
 
     sinon.stub window, 'setInterval', -> 102
 
@@ -27,81 +27,81 @@ describe 'Visibility', ->
 
       it 'calls onVisible immediately when API is not supported', ->
         sinon.stub Visibility, 'isSupported', -> false
-        sinon.spy(Visibility, '_setListener')
+        sinon.spy(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.onVisible(callback).should.be.false
 
         callback.should.have.been.called
-        Visibility._setListener.should.not.have.been.called
+        Visibility._listen.should.not.have.been.called
 
       it 'runs onVisible callback immediately if page is visible', ->
-        Visibility._chechedPrefix = 'webkit'
+        Visibility._cached    = 'webkit'
         document.webkitHidden = false
-        sinon.spy(Visibility, '_setListener')
+        sinon.spy(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.onVisible(callback).should.be.true
 
         callback.should.have.been.called
-        Visibility._setListener.should.not.have.been.called
+        Visibility._listen.should.not.have.been.called
 
       it 'runs onVisible callback by listener on hidden page', ->
-        Visibility._chechedPrefix = 'webkit'
+        Visibility._cached    = 'webkit'
         document.webkitHidden = true
-        sinon.spy(Visibility, '_setListener')
+        sinon.spy(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.onVisible(callback).should.be.a('number')
 
         callback.should.not.have.been.called
-        Visibility._setListener.should.have.been.called
+        Visibility._listen.should.have.been.called
 
-        Visibility._onChange()
+        Visibility._change()
         callback.should.not.have.been.called
 
         document.webkitHidden = false
-        Visibility._onChange()
+        Visibility._change()
         callback.should.have.been.calledOnce
 
-        Visibility._onChange()
+        Visibility._change()
         callback.should.have.been.calledOnce
 
     describe '.change()', ->
 
       it 'returns false on `change` call when API is not supported', ->
         sinon.stub Visibility, 'isSupported', -> false
-        sinon.spy(Visibility, '_setListener')
+        sinon.spy(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.change(callback).should.be.false
 
         callback.should.not.have.been.called
-        Visibility._setListener.should.not.have.been.called
+        Visibility._listen.should.not.have.been.called
 
       it 'calls callback on visibility state changes', ->
-        Visibility._chechedPrefix = 'webkit'
-        sinon.spy(Visibility, '_setListener')
+        Visibility._cached = 'webkit'
+        sinon.spy(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.change(callback).should.not.be.false
-        Visibility._setListener.should.have.been.called
+        Visibility._listen.should.have.been.called
 
         event = { }
         document.webkitVisibilityState = 'visible'
-        Visibility._onChange(event)
+        Visibility._change(event)
         callback.should.have.been.calledWith(event, 'visible')
 
         document.webkitVisibilityState = 'hidden'
-        Visibility._onChange(event)
+        Visibility._change(event)
         callback.should.have.been.calledTwice
         callback.getCall(1).calledWith(event, 'hidden').should.be.true
 
     describe '.unbind()', ->
 
       it 'removes listener', ->
-        Visibility._chechedPrefix = 'webkit'
-        sinon.spy(Visibility, '_setListener')
+        Visibility._cached = 'webkit'
+        sinon.spy(Visibility, '_listen')
 
         callback1 = sinon.spy()
         callback2 = sinon.spy()
@@ -111,7 +111,7 @@ describe 'Visibility', ->
 
         Visibility.unbind(id2)
 
-        Visibility._onChange({ })
+        Visibility._change({ })
         callback1.should.have.been.called
         callback2.should.not.have.been.called
 
@@ -119,51 +119,51 @@ describe 'Visibility', ->
 
       it 'runs afterPrerendering callback immediately without API', ->
         sinon.stub Visibility, 'isSupported', -> false
-        sinon.stub(Visibility, '_setListener')
+        sinon.stub(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.afterPrerendering(callback).should.be.false
 
         callback.should.have.been.called
-        Visibility._setListener.should.not.have.been.called
+        Visibility._listen.should.not.have.been.called
 
       it 'runs afterPrerendering immediately if page isn’t prerended', ->
-        Visibility._chechedPrefix      = 'webkit'
+        Visibility._cached             = 'webkit'
         document.webkitVisibilityState = 'hidden'
-        sinon.stub(Visibility, '_setListener')
+        sinon.stub(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.afterPrerendering(callback).should.be.true
 
         callback.should.have.been.called
-        Visibility._setListener.should.not.have.been.called
+        Visibility._listen.should.not.have.been.called
 
       it 'runs afterPrerendering listeners on prerended page', ->
-        Visibility._chechedPrefix      = 'webkit'
+        Visibility._cached             = 'webkit'
         document.webkitVisibilityState = 'prerender'
-        sinon.stub(Visibility, '_setListener')
+        sinon.stub(Visibility, '_listen')
         callback = sinon.spy()
 
         Visibility.afterPrerendering(callback).should.be.a('number')
 
         callback.should.not.have.been.called
-        Visibility._setListener.should.have.been.called
+        Visibility._listen.should.have.been.called
 
-        Visibility._onChange()
+        Visibility._change()
         callback.should.not.have.been.called
 
         document.webkitVisibilityState = 'visible'
-        Visibility._onChange()
+        Visibility._change()
         callback.should.have.been.called
 
-        Visibility._onChange()
+        Visibility._change()
         callback.should.have.been.calledOnce
 
     describe '.hidden()', ->
 
       it 'checks if the page is hidden', ->
-        Visibility._chechedPrefix = 'webkit'
-        document.webkitHidden     = true
+        Visibility._cached    = 'webkit'
+        document.webkitHidden = true
         Visibility.hidden().should.be.true
 
         document.webkitHidden = false
@@ -172,7 +172,7 @@ describe 'Visibility', ->
     describe '.state()', ->
 
       it 'returns visibility state', ->
-        Visibility._chechedPrefix      = 'webkit'
+        Visibility._cached             = 'webkit'
         document.webkitVisibilityState = 'visible'
         Visibility.state().should.eql('visible')
 
@@ -182,32 +182,32 @@ describe 'Visibility', ->
         Visibility.isSupported().should.be.false
 
         document.webkitVisibilityState = 'visible'
-        Visibility._chechedPrefix = null
+        Visibility._cached = null
         Visibility.isSupported().should.be.true
 
-    describe '._hiddenBefore', ->
+    describe '._wasHidden', ->
 
       it 'remembers if page is hidden on loading', ->
-        Visibility._chechedPrefix = 'webkit'
-        document.webkitHidden     = true
+        Visibility._cached    = 'webkit'
+        document.webkitHidden = true
 
         Visibility._init()
-        Visibility._hiddenBefore.should.be.true
+        Visibility._wasHidden.should.be.true
 
         document.webkitHidden = false
         Visibility._init()
-        Visibility._hiddenBefore.should.be.false
+        Visibility._wasHidden.should.be.false
 
       it 'remembers if previous state is `visible`', ->
-        Visibility._chechedPrefix = 'webkit'
-        document.webkitHidden     = true
+        Visibility._cached    = 'webkit'
+        document.webkitHidden = true
 
-        Visibility._onChange()
-        Visibility._hiddenBefore.should.be.true
+        Visibility._change()
+        Visibility._wasHidden.should.be.true
 
         document.webkitHidden  = false
-        Visibility._onChange()
-        Visibility._hiddenBefore.should.be.false
+        Visibility._change()
+        Visibility._wasHidden.should.be.false
 
     describe '._prefix()', ->
 
@@ -227,16 +227,16 @@ describe 'Visibility', ->
         document.webkitVisibilityState = 'visible'
         Visibility._prefix().should.eql('')
 
-        Visibility._chechedPrefix = null
+        Visibility._cached = null
         Visibility._prefix().should.eql('webkit')
 
     describe '._name()', ->
 
       it 'uses properties with vendor prefix', ->
-        Visibility._chechedPrefix = ''
+        Visibility._cached = ''
         Visibility._name('hidden').should.eql('hidden')
 
-        Visibility._chechedPrefix = 'webkit'
+        Visibility._cached = 'webkit'
         Visibility._name('hidden').should.eql('webkitHidden')
 
     describe '._prop()', ->
@@ -245,49 +245,49 @@ describe 'Visibility', ->
         document.hidden       = 2
         document.webkitHidden = 1
 
-        Visibility._chechedPrefix = 'webkit'
+        Visibility._cached = 'webkit'
         Visibility._prop('hidden').should.eql(1)
 
-        Visibility._chechedPrefix = ''
+        Visibility._cached = ''
         Visibility._prop('hidden').should.eql(2)
 
       it 'returns default value, when API is not supported', ->
-        document.hidden = 'supported'
-        Visibility._chechedPrefix = null
+        document.hidden    = 'supported'
+        Visibility._cached = null
         Visibility._prop('hidden', 'unsupported').should.eql('unsupported')
 
-        Visibility._chechedPrefix = ''
+        Visibility._cached = ''
         Visibility._prop('hidden', 'unsupported').should.eql('supported')
 
-    describe '._setListener()', ->
+    describe '._listen()', ->
 
       it 'sets listener only once', ->
-        Visibility._chechedPrefix = 'webkit'
+        Visibility._cached = 'webkit'
         sinon.spy(document, 'addEventListener')
 
-        Visibility._setListener()
-        Visibility._setListener()
+        Visibility._listen()
+        Visibility._listen()
 
         document.addEventListener.should.have.been.calledOnce
 
       it 'sets listener', ->
-        Visibility._chechedPrefix = 'webkit'
+        Visibility._cached = 'webkit'
         listener = null
         document.addEventListener = (a, b, c) -> listener = b
-        sinon.spy(Visibility, '_onChange')
+        sinon.spy(Visibility, '_change')
 
-        Visibility._setListener()
+        Visibility._listen()
         listener()
 
-        Visibility._onChange.should.have.been.called
-        Visibility._onChange.should.have.been.calledOn(Visibility)
+        Visibility._change.should.have.been.called
+        Visibility._change.should.have.been.calledOn(Visibility)
 
       it 'sets listener in IE', ->
-        Visibility._chechedPrefix = 'ms'
+        Visibility._cached = 'ms'
         Visibility._doc = document = { attachEvent: -> }
         sinon.spy(document, 'attachEvent')
 
-        Visibility._setListener()
+        Visibility._listen()
 
         document.attachEvent.should.have.been.called
 
@@ -296,10 +296,10 @@ describe 'Visibility', ->
     describe '.every()', ->
 
       it 'creates a new timer from every method', ->
-        Visibility._chechedPrefix = 'webkit'
+        Visibility._cached    = 'webkit'
         document.webkitHidden = true
-        sinon.stub(Visibility, '_runTimer')
-        sinon.stub(Visibility, '_initTimers')
+        sinon.stub(Visibility, '_run')
+        sinon.stub(Visibility, '_time')
 
         callback1 = ->
         id1 = Visibility.every(1, 10, callback1)
@@ -314,25 +314,25 @@ describe 'Visibility', ->
         right[id2] = { interval: 2, hiddenInterval: null, callback: callback2 }
         Visibility._timers.should.eql(right)
 
-        Visibility._runTimer.should.have.been.calledTwice
-        Visibility._runTimer.args[0].should.eql([id1, false])
-        Visibility._runTimer.args[1].should.eql([id2, false])
+        Visibility._run.should.have.been.calledTwice
+        Visibility._run.args[0].should.eql([id1, false])
+        Visibility._run.args[1].should.eql([id2, false])
 
-        Visibility._initTimers.should.have.been.called
+        Visibility._time.should.have.been.called
 
       it 'sets visible timer from every method without API', ->
-        Visibility._initTimers()
+        Visibility._time()
         sinon.stub(Visibility, '_setInterval')
-        sinon.stub(Visibility, '_setListener')
+        sinon.stub(Visibility, '_listen')
         callback = ->
         Visibility.every(1, 10, callback)
 
         Visibility._setInterval.should.have.been.calledWith(callback, 1)
-        Visibility._setListener.should.not.have.been.called
+        Visibility._listen.should.not.have.been.called
 
       it 'executes timers', ->
-        Visibility._chechedPrefix = 'webkit'
-        document.webkitHidden     = true
+        Visibility._cached    = 'webkit'
+        document.webkitHidden = true
         lastID = 100
         sinon.stub Visibility, '_setInterval', -> lastID += 1
 
@@ -343,13 +343,13 @@ describe 'Visibility', ->
           1: { interval: 1, hiddenInterval: 10,   callback: callback1 }
           2: { interval: 2, hiddenInterval: null, callback: callback2 }
 
-        Visibility._runTimer(1, false)
+        Visibility._run(1, false)
         Visibility._timers[1].id.should.eql(101)
         Visibility._setInterval.should.have.been.calledOnce
         Visibility._setInterval.should.have.been.calledWith(callback1, 10)
         callback1.should.not.have.been.called
 
-        Visibility._runTimer(2, false)
+        Visibility._run(2, false)
         Visibility._timers[2].should.eql
           interval:       2
           callback:       callback2
@@ -357,64 +357,64 @@ describe 'Visibility', ->
         Visibility._setInterval.should.have.been.calledOnce
 
         document.webkitHidden = false
-        Visibility._runTimer(1, true)
+        Visibility._run(1, true)
         Visibility._timers[1].id.should.eql(102)
         Visibility._setInterval.callCount.should.eql(2)
         Visibility._setInterval.should.be.calledWith(callback1, 1)
         callback1.should.have.been.calledOn(window)
 
       it 'stops and run timers on state changes', ->
-        Visibility._chechedPrefix = 'webkit'
-        document.webkitHidden     = true
-        Visibility._hiddenBefore  = true
-        sinon.stub(Visibility, '_stopTimer')
-        sinon.stub(Visibility, '_runTimer')
+        Visibility._cached    = 'webkit'
+        document.webkitHidden = true
+        Visibility._wasHidden = true
+        sinon.stub(Visibility, '_stop')
+        sinon.stub(Visibility, '_run')
         callback = sinon.spy
         Visibility._timers =
           1: { interval: 1, hiddenInterval: 10,   callback: callback }
           3: { interval: 2, hiddenInterval: null, callback: callback }
-        Visibility._initTimers()
+        Visibility._time()
 
-        Visibility._onChange()
-        Visibility._stopTimer.should.not.have.been.called
-        Visibility._runTimer.should.not.have.been.called
+        Visibility._change()
+        Visibility._stop.should.not.have.been.called
+        Visibility._run.should.not.have.been.called
 
         document.webkitHidden = false
-        Visibility._onChange()
-        Visibility._stopTimer.should.have.been.calledTwice
-        Visibility._stopTimer.args[0].should.eql(['1'])
-        Visibility._stopTimer.args[1].should.eql(['3'])
-        Visibility._runTimer.should.have.been.calledTwice
-        Visibility._runTimer.args[0].should.eql(['1', true])
-        Visibility._runTimer.args[1].should.eql(['3', true])
+        Visibility._change()
+        Visibility._stop.should.have.been.calledTwice
+        Visibility._stop.args[0].should.eql(['1'])
+        Visibility._stop.args[1].should.eql(['3'])
+        Visibility._run.should.have.been.calledTwice
+        Visibility._run.args[0].should.eql(['1', true])
+        Visibility._run.args[1].should.eql(['3', true])
 
-        Visibility._onChange()
-        Visibility._stopTimer.should.have.been.calledTwice
-        Visibility._runTimer.should.have.been.calledTwice
+        Visibility._change()
+        Visibility._stop.should.have.been.calledTwice
+        Visibility._run.should.have.been.calledTwice
 
         document.webkitHidden = true
-        Visibility._onChange()
-        Visibility._stopTimer.callCount.should.eql(4)
-        Visibility._stopTimer.args[2].should.eql(['1'])
-        Visibility._stopTimer.args[3].should.eql(['3'])
-        Visibility._runTimer.callCount.should.eql(4)
-        Visibility._runTimer.args[2].should.eql(['1', false])
-        Visibility._runTimer.args[3].should.eql(['3', false])
+        Visibility._change()
+        Visibility._stop.callCount.should.eql(4)
+        Visibility._stop.args[2].should.eql(['1'])
+        Visibility._stop.args[3].should.eql(['3'])
+        Visibility._run.callCount.should.eql(4)
+        Visibility._run.args[2].should.eql(['1', false])
+        Visibility._run.args[3].should.eql(['3', false])
 
-    describe '._initTimers()', ->
+    describe '._time()', ->
 
       it 'initlializes only once', ->
         sinon.stub(Visibility, 'change')
 
-        Visibility._initTimers()
-        Visibility._timersInitialized.should.be.true
+        Visibility._time()
+        Visibility._timed.should.be.true
         Visibility.change.should.have.been.calledOnce
 
-        Visibility._initTimers()
+        Visibility._time()
         Visibility.change.should.have.been.calledOnce
 
-        Visibility._timersInitialized = false
-        Visibility._initTimers()
+        Visibility._timed = false
+        Visibility._time()
         Visibility.change.should.have.been.calledTwice
 
       it 'calls DOM setInterval from internal method', ->
@@ -422,7 +422,7 @@ describe 'Visibility', ->
         Visibility._setInterval(callback, 1000).should.eql(102)
         window.setInterval.should.have.been.calledWith(callback, 1000)
 
-    describe '._stopTimer()', ->
+    describe '._stop()', ->
 
       afterEach ->
         window.clearInterval.restore?()
@@ -437,7 +437,7 @@ describe 'Visibility', ->
             callback:       callback
             id:             101
 
-        Visibility._stopTimer(1)
+        Visibility._stop(1)
         window.clearInterval.should.have.been.calledWith(101)
         Visibility._timers[1].should.eql
           interval:       1
