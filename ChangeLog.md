@@ -1,3 +1,9 @@
+## 1.1.0 “Explorer 6, photo”
+* Prevent to run timer often, that it’s interval, when visibility was changed.
+* Allow to install by Bower package manager.
+* Change license to MIT.
+* Reduce library size.
+
 ## 1.0.0 “Discoverer 2, stable”
 * Remove jQuery.Chrono integration.
 * Remove outdated Firefox prefix.
