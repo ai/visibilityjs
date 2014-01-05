@@ -68,9 +68,6 @@ Visibility.every(minute, 5 * minute, function () {
 });
 ```
 
-Note that the callback will also be executed on every `hidden`->`visible` state
-change to update old contents.
-
 `Visibility.every` returns a timer identifier, much like the `setInterval`
 function. It cannot be passed to `clearInterval`, through, and you should use
 `Visibility.stop(id)` to stop the timer.
