@@ -169,7 +169,7 @@ task 'gem', 'Build RubyGem package', ->
 
   copy("ruby/#{gem}.rb",     "build/lib/#{gem}.rb")
   copy('README.md',          'build/README.md')
-  copy('ChangeLog',          'build/ChangeLog')
+  copy('ChangeLog.md',       'build/ChangeLog.md')
   copy('LICENSE',            'build/LICENSE')
   for file in project.files()
     copy(file, file.replace('lib/', 'build/lib/assets/javascripts/'))

@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
                         'lib/assets/javascripts/visibility.timers.js',
                         'lib/assets/javascripts/visibility.fallback.js',
                         'lib/visibilityjs.rb',
-                        'LICENSE', 'README.md', 'ChangeLog']
-  s.extra_rdoc_files = ['LICENSE', 'README.md', 'ChangeLog']
+                        'LICENSE', 'README.md', 'ChangeLog.md']
+  s.extra_rdoc_files = ['LICENSE', 'README.md', 'ChangeLog.md']
   s.require_path     = 'lib'
 
   s.author   = 'Andrey Sitnik'
