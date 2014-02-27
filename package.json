@@ -2,13 +2,13 @@
   "name": "visibilityjs",
   "version": "1.1.0",
   "devDependencies": {
-    "coffee-script": "1.6.3",
-    "mocha":         "1.16.2",
-    "chai":          "1.8.1",
-    "sinon":         "1.7.3",
-    "sinon-chai":    "2.4.0",
+    "coffee-script": "1.7.1",
+    "mocha":         "1.17.1",
+    "chai":          "1.9.0",
+    "sinon":         "1.8.2",
+    "sinon-chai":    "2.5.0",
     "fs-extra":      "0.8.1",
-    "uglify-js":     "2.4.8"
+    "uglify-js":     "2.4.12"
   },
   "scripts": {
     "test": "mocha"

@@ -87,9 +87,7 @@ mocha =
   system: ->
     @scripts ['node_modules/mocha/mocha.js',
               'node_modules/chai/chai.js',
-              'node_modules/sinon/lib/sinon.js',
-              'node_modules/sinon/lib/sinon/spy.js',
-              'node_modules/sinon/lib/sinon/stub.js',
+              'node_modules/sinon/pkg/sinon.js',
               'node_modules/sinon-chai/lib/sinon-chai.js']
 
 task 'server', 'Run test server', ->
