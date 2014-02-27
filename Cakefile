@@ -122,9 +122,7 @@ task 'server', 'Run test server', ->
   console.log('Open http://localhost:8000/')
 
 task 'clean', 'Remove all generated files', ->
-  fs.removeSync('build/') if fs.existsSync('build/')
-  fs.removeSync('pkg/')   if fs.existsSync('pkg/')
-
+  fs.removeSync('pkg/') if fs.existsSync('pkg/')
   for file in fs.readdirSync('./')
     fs.removeSync(file) if file.match(/\.gem$/)
 
@@ -133,9 +131,11 @@ fullPack = (file) ->
 task 'min', 'Create minimized version of library', ->
   uglify = require('uglify-js')
 
-  fs.mkdirsSync('pkg/') unless fs.existsSync('pkg/')
-  for file in project.files()
-    continue if file == 'lib/visibility.js' or file.match(/\.rb$/)
+  invoke('clean')
+  fs.mkdirsSync('pkg/')
+
+  for file in project.libs()
+    continue if file == 'visibility.js'
     name = file.replace(/^lib\//, '').replace(/\.js$/, '')
     fs.copySync(file, "pkg/#{name}-#{project.version()}.min.js")
 
