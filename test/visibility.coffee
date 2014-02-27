@@ -11,7 +11,7 @@ describe 'Visibility', ->
     document.visibilityState = state
 
   beforeEach ->
-    Visibility._enable    = false
+    Visibility._init      = false
     Visibility._timed     = false
     Visibility._lastId    = -1
     Visibility._callbacks = []
@@ -187,16 +187,6 @@ describe 'Visibility', ->
         Visibility.isSupported().should.be.true
 
     describe '._wasHidden', ->
-
-      it 'remembers if page is hidden on loading', ->
-        webkitSet('hidden')
-
-        Visibility._init()
-        Visibility._wasHidden.should.be.true
-
-        webkitSet('visible')
-        Visibility._init()
-        Visibility._wasHidden.should.be.false
 
       it 'remembers if previous state is `visible`', ->
         webkitSet('hidden')
