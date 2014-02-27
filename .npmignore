@@ -1,0 +1,13 @@
+.gitignore
+
+node_modules
+pkg
+logo.svg
+
+test
+.travis.yml
+
+Cakefile
+
+bower.json
+visibilityjs.gemspec
