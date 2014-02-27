@@ -10,7 +10,7 @@ module VisibilityJs
   module Rails
     class Engine < ::Rails::Engine
       initializer 'visibilityjs' do
-        VisibilityJs.install(Rails.application.assets)
+        VisibilityJs.install(::Rails.application.assets)
       end
     end
   end
