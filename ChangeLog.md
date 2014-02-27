@@ -8,7 +8,7 @@
 * Remove jQuery.Chrono integration.
 * Remove outdated Firefox prefix.
 
-## 0.6.2 “Pioneer 4, american sun”
+## 0.6.2 “Pioneer 4, American Sun”
 * Decrease files size (by compressible code and UnglifyJS 2).
 * Remove unnecessary vendor prefixes from fallback.
 
@@ -17,7 +17,7 @@
 
 ## 0.6 “Luna 1, Mechta”
 * Methods onVisible and afterPrerendering return listener ID (by mcfedr).
-* Fix documentation (by Erwann Mest).
+* Fix documentation (by Erwänn Mest).
 
 ## 0.5 “SCORE, communication”
 * Split library to core and timers modules.
