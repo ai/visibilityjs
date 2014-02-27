@@ -1,11 +1,13 @@
 window = global;
-window.addEventListener = function () { };
 document = {
   createElement:    function () { },
   addEventListener: function () { }
 };
+window.addEventListener = function () { };
 
 sinon = require('sinon');
+
+Visibility = require('../')
 
 chai      = require('chai');
 sinonChai = require('sinon-chai');

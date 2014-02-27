@@ -1,5 +1,3 @@
 --reporter spec
 --require ./test/mocha
---require ./lib/visibility.core
---require ./lib/visibility.timers
  --compilers coffee:coffee-script/register
