@@ -165,6 +165,9 @@ describe 'Visibility', ->
 
     describe '.hidden()', ->
 
+      it 'always returns boolean', ->
+        Visibility.hidden().should.be.false
+
       it 'checks if the page is hidden', ->
         webkitSet('hidden')
         Visibility.hidden().should.be.true
