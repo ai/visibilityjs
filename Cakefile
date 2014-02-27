@@ -1,10 +1,8 @@
-fs     = require('fs-extra')
-url    = require('url')
-exec   = require('child_process').exec
-http   = require('http')
-path   = require('path')
-coffee = require('coffee-script')
-uglify = require('uglify-js')
+fs   = require('fs-extra')
+url  = require('url')
+exec = require('child_process').exec
+http = require('http')
+path = require('path')
 
 project =
 
@@ -18,15 +16,14 @@ project =
     @package().version
 
   tests: ->
-    fs.readdirSync('test/').
-      filter( (i) -> i.match /\.coffee$/ ).
-      map( (i) -> "test/#{i}" )
-
-  files: ->
-    fs.readdirSync('lib/').map( (i) -> "lib/#{i}" ).sort()
+    fs.readdirSync('test/')
+      .filter (i) -> i.match /\.coffee$/
+      .map    (i) -> "test/#{i}"
 
   libs: ->
-    @files().filter (file) -> !file.match(/fallback/)
+    fs.readdirSync('lib/').sort()
+      .filter (i) -> i.indexOf('.js') != -1
+      .map    (i) -> "lib/#{i}"
 
   title: ->
     @name()[0].toUpperCase() + @name()[1..-1]
@@ -91,6 +88,8 @@ mocha =
               'node_modules/sinon-chai/lib/sinon-chai.js']
 
 task 'server', 'Run test server', ->
+  coffee = require('coffee-script')
+
   server = http.createServer (req, res) ->
     pathname = url.parse(req.url).pathname
 
@@ -126,54 +125,28 @@ task 'clean', 'Remove all generated files', ->
   fs.removeSync('build/') if fs.existsSync('build/')
   fs.removeSync('pkg/')   if fs.existsSync('pkg/')
 
+  for file in fs.readdirSync('./')
+    fs.removeSync(file) if file.match(/\.gem$/)
+
 fullPack = (file) ->
-  core = fs.readFileSync('lib/visibility.core.js').toString()
-  core = core.replace('})();', '')
-
-  timers = fs.readFileSync('lib/visibility.timers.js').toString()
-  timers = timers.replace(/[\w\W]*var timers/, '    var timers')
-
-  fs.writeFileSync(file, core + timers)
 
 task 'min', 'Create minimized version of library', ->
-  copy = require('fs-extra/lib/copy').copySync
+  uglify = require('uglify-js')
 
   fs.mkdirsSync('pkg/') unless fs.existsSync('pkg/')
   for file in project.files()
+    continue if file == 'lib/visibility.js' or file.match(/\.rb$/)
     name = file.replace(/^lib\//, '').replace(/\.js$/, '')
-    copy(file, "pkg/#{name}-#{project.version()}.min.js")
-  fullPack("pkg/visibility-#{project.version()}.min.js")
+    fs.copySync(file, "pkg/#{name}-#{project.version()}.min.js")
+
+  core   = fs.readFileSync('lib/visibility.core.js').toString()
+  core   = core.replace('})();', '')
+  timers = fs.readFileSync('lib/visibility.timers.js').toString()
+  timers = timers.replace(/[\w\W]*var timers/, '    var timers')
+  fs.writeFileSync("pkg/visibility-#{project.version()}.min.js", core + timers)
 
   packages = fs.readdirSync('pkg/').filter( (i) -> i.match(/\.js$/) )
   for file in packages
+    continue unless file.match(/\.js$/)
     min = uglify.minify('pkg/' + file)
     fs.writeFileSync('pkg/' + file, min.code)
-
-task 'gem', 'Build RubyGem package', ->
-  fs.removeSync('build/') if fs.existsSync('build/')
-  fs.mkdirsSync('build/lib/assets/javascripts/')
-
-  copy = require('fs-extra/lib/copy').copySync
-  gem  = project.name().replace('.', '')
-
-  gemspec = fs.readFileSync("#{gem}.gemspec").toString()
-  gemspec = gemspec.replace('VERSION', "'#{project.version()}'")
-  fs.writeFileSync("build/#{gem}.gemspec", gemspec)
-
-  copy("ruby/#{gem}.rb",     "build/lib/#{gem}.rb")
-  copy('README.md',          'build/README.md')
-  copy('ChangeLog.md',       'build/ChangeLog.md')
-  copy('LICENSE',            'build/LICENSE')
-  for file in project.files()
-    copy(file, file.replace('lib/', 'build/lib/assets/javascripts/'))
-  fullPack('build/lib/assets/javascripts/visibility.js')
-
-  exec "cd build/; gem build #{gem}.gemspec", (error, message) ->
-    if error
-      console.error(error.message)
-      process.exit(1)
-    else
-      fs.mkdirsSync('pkg/') unless fs.existsSync('pkg/')
-      gemFile = fs.readdirSync('build/').filter( (i) -> i.match(/\.gem$/) )[0]
-      copy('build/' + gemFile, 'pkg/' + gemFile)
-      fs.removeSync('build/')

@@ -1,7 +1,12 @@
+require 'pathname'
+
+package = Pathname(__FILE__).dirname.join('package.json').read
+version = package.match(/"version": "([\d\.]+)",/)[1]
+
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'visibilityjs'
-  s.version     = VERSION
+  s.version     = version
   s.summary     = 'Visibility.js - a wrapper for the Page Visibility API.'
   s.description = 'Visibility.js allow you to determine whether ' +
                   'your web page is visible to an user, is hidden in ' +
@@ -9,10 +14,10 @@ Gem::Specification.new do |s|
                   'the page visibility state in JavaScript logic and improve ' +
                   'browser performance or improve user interface experience.'
 
-  s.files            = ['lib/assets/javascripts/visibility.js',
-                        'lib/assets/javascripts/visibility.core.js',
-                        'lib/assets/javascripts/visibility.timers.js',
-                        'lib/assets/javascripts/visibility.fallback.js',
+  s.files            = ['lib/visibility.js',
+                        'lib/visibility.core.js',
+                        'lib/visibility.timers.js',
+                        'lib/visibility.fallback.js',
                         'lib/visibilityjs.rb',
                         'LICENSE', 'README.md', 'ChangeLog.md']
   s.extra_rdoc_files = ['LICENSE', 'README.md', 'ChangeLog.md']
