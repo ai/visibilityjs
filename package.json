@@ -1,14 +1,22 @@
 {
   "name": "visibilityjs",
   "version": "1.1.0",
+  "description": "Wrapper for the Page Visibility API",
+  "keywords": ["page visibility api", "visibility", "polyfill", "timer"],
+  "author": "Andrey Sitnik <andrey@sitnik.ru>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ai/visibility.js.git"
+  },
   "devDependencies": {
     "coffee-script": "1.7.1",
-    "mocha":         "1.17.1",
-    "chai":          "1.9.0",
-    "sinon":         "1.8.2",
     "sinon-chai":    "2.5.0",
+    "uglify-js":     "2.4.12",
     "fs-extra":      "0.8.1",
-    "uglify-js":     "2.4.12"
+    "sinon":         "1.8.2",
+    "mocha":         "1.17.1",
+    "chai":          "1.9.0"
   },
   "scripts": {
     "test": "mocha"

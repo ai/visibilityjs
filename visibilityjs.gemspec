@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'visibilityjs'
   s.version     = version
-  s.summary     = 'Visibility.js - a wrapper for the Page Visibility API.'
+  s.summary     = 'Wrapper for the Page Visibility API'
   s.description = 'Visibility.js allow you to determine whether ' +
                   'your web page is visible to an user, is hidden in ' +
                   'background tab or is prerendering. It allows you use ' +

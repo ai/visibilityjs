@@ -2,9 +2,7 @@
   "name": "visibilityjs",
   "version": "1.1.0",
   "homepage": "https://github.com/ai/visibility.js",
-  "authors": [
-    "Andrey A.I. Sitnik <andrey@sitnik.ru>"
-  ],
+  "authors": ["Andrey A.I. Sitnik <andrey@sitnik.ru>"],
   "description": "Wrapper for the Page Visibility API",
   "license": "MIT",
   "main": [
