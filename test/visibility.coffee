@@ -13,11 +13,9 @@ describe 'Visibility', ->
   beforeEach ->
     Visibility._init      = false
     Visibility._timed     = false
-    Visibility._lastId    = -1
-    Visibility._callbacks = []
-    Visibility._lastTimer = -1
     Visibility._timers    = { }
     Visibility._wasHidden = false
+    Visibility._callbacks = []
     Visibility._doc = document = { addEventListener: -> }
 
     sinon.stub window, 'setInterval', -> 102
@@ -189,18 +187,6 @@ describe 'Visibility', ->
         webkitSet('visible')
         Visibility.isSupported().should.be.true
 
-    describe '._wasHidden', ->
-
-      it 'remembers if previous state is `visible`', ->
-        webkitSet('hidden')
-
-        Visibility._change()
-        Visibility._wasHidden.should.be.true
-
-        webkitSet('visible')
-        Visibility._change()
-        Visibility._wasHidden.should.be.false
-
     describe '._listen()', ->
 
       it 'sets listener only once', ->
@@ -250,11 +236,9 @@ describe 'Visibility', ->
 
         callback1 = ->
         id1 = Visibility.every(1, 10, callback1)
-        Visibility._lastTimer.should.eql(id1)
 
         callback2 = ->
         id2 = Visibility.every(2, callback2)
-        Visibility._lastTimer.should.eql(id2)
 
         right = { }
         right[id1] = { visible: 1, hidden: 10,   callback: callback1 }
@@ -281,17 +265,17 @@ describe 'Visibility', ->
         window.setInterval.restore()
         sinon.stub window, 'setInterval', (callback, ms) -> runner = callback
 
-        now   = new Date()
-        Visibility.every(1, 10, ->)
+        now = new Date()
+        id  = Visibility.every(1, 10, ->)
 
-        Visibility._timers[0].should.not.have.property('last')
+        Visibility._timers[id].should.not.have.property('last')
 
         runner()
-        Visibility._timers[0].last.should.eql(new Date(0))
+        Visibility._timers[id].last.should.eql(new Date(0))
 
         @clock.tick(100)
         runner()
-        Visibility._timers[0].last.should.eql(new Date(100))
+        Visibility._timers[id].last.should.eql(new Date(100))
 
       it 'executes timers', ->
         webkitSet('hidden')
@@ -390,6 +374,21 @@ describe 'Visibility', ->
 
         @clock.tick(1000)
         callback.should.have.been.calledThrice
+
+    describe '._wasHidden', ->
+
+      it 'remembers if previous state is `visible`', ->
+        webkitSet('hidden')
+
+        Visibility._time()
+        Visibility._wasHidden.should.be.true
+
+        Visibility._change()
+        Visibility._wasHidden.should.be.true
+
+        webkitSet('visible')
+        Visibility._change()
+        Visibility._wasHidden.should.be.false
 
     describe '._time()', ->
 
