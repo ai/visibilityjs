@@ -40,15 +40,10 @@ mocha =
               <title>#title# Tests</title>
               <link rel="stylesheet" href="/style.css">
               <style>
-                body {
-                  padding: 0;
-                }
                 #integration {
                   position: absolute;
-                  top: 1.45em;
-                  margin-left: 120px;
-                  font-weight: 200;
-                  font-size: 0.7em;
+                  top: 22px;
+                  left: 66px;
                 }
               </style>
               #system#
