@@ -9,5 +9,8 @@ test
 
 Cakefile
 
-bower.json
+*.rb
+lib/visibility.js
 visibilityjs.gemspec
+
+bower.json
