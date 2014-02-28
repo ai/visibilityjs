@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
 
   s.author   = 'Andrey Sitnik'
   s.email    = 'andrey@sitnik.ru'
-  s.homepage = 'https://github.com/ai/visibility.js'
+  s.homepage = 'https://github.com/ai/visibilityjs'
   s.license  = 'MIT'
 
   s.add_dependency 'sprockets', '>= 2'

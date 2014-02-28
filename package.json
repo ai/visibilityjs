@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ai/visibility.js.git"
+    "url": "https://github.com/ai/visibilityjs.git"
   },
   "devDependencies": {
     "coffee-script": "1.7.1",

@@ -1,6 +1,6 @@
 # Visibility.js
 
-<img align="right" width="100" src="http://ai.github.io/visibility.js/logo.svg" title="Visibility.js logo by Eugenia Tuchapets">
+<img align="right" width="100" src="http://ai.github.io/visibilityjs/logo.svg" title="Visibility.js logo by Eugenia Tuchapets">
 
 Visibility.js is a wrapper for the [Page Visibility API]. It hides vendor prefixes and adds high level functions.
 
@@ -292,7 +292,7 @@ Add to your site:
 ### Other
 
 If you need just a files, you can take already minified packages from
-[github.com/ai/visibility.js/releases](https://github.com/ai/visibility.js/releases).
+[github.com/ai/visibilityjs/releases](https://github.com/ai/visibilityjs/releases).
 
 ## Contributing
 
