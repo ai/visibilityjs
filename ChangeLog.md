@@ -1,3 +1,11 @@
+### 1.2.0 “Discoverer 5, spy”
+* Allow to use in CommonJS.
+* Release npm package.
+* Reduce library size to 10 %.
+* Allow to use latest version from master in Ruby Bundler.
+* Method `hidden()` now always return boolean.
+* Change repository URL to `github.com/ai/visibilityjs`.
+
 ## 1.1.0 “Explorer 6, photo”
 * Prevent to run timer often, that it’s interval, when visibility was changed.
 * Allow to install by Bower package manager.
