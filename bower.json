@@ -13,7 +13,7 @@
     "package.json",
     "*.gemspec",
     "Cakefile",
-    "test"
+    "test",
     "*.rb",
     ".*"
   ]
