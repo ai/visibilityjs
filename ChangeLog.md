@@ -1,3 +1,6 @@
+### 1.2.1 “Fix bower”
+* Add missing comma.
+
 ### 1.2.0 “Discoverer 5, spy”
 * Allow to use in CommonJS.
 * Release npm package.
