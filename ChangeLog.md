@@ -1,3 +1,6 @@
+### 1.2.1 “Discoverer 6, again”
+* Fix Bower config by Misha Ponizil.
+
 ### 1.2.0 “Discoverer 5, spy”
 * Allow to use in CommonJS.
 * Release npm package.
