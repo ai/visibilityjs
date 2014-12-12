@@ -1,4 +1,4 @@
-# Visibility.js
+# Visibility.js [![Build Status](https://travis-ci.org/ai/visibilityjs.svg)](https://travis-ci.org/ai/visibilityjs)
 
 <img align="right" width="100" src="http://ai.github.io/visibilityjs/logo.svg" title="Visibility.js logo by Eugenia Tuchapets">
 
@@ -20,7 +20,9 @@ Page Visibility API is [natively supported] by all browsers. For old browsers
 you can use `lib/visibility.fallback.js` with focus/blur hack (note that this
 hack has an issue: when browser just lose focus but still visible for user, its state will change to [hidden]).
 
-Sponsored by [Evil Martians].
+<a href="https://evilmartians.com/?utm_source=visibilityjs">
+<img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
+</a>
 
 [Page Visibility API]: http://www.w3.org/TR/page-visibility/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
