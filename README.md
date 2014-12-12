@@ -27,7 +27,6 @@ hack has an issue: when browser just lose focus but still visible for user, its 
 [Page Visibility API]: http://www.w3.org/TR/page-visibility/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
 [natively supported]:  http://caniuse.com/pagevisibility
-[Evil Martians]:       http://evilmartians.com/
 
 ## Translations
 
