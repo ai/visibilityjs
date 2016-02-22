@@ -1,3 +1,7 @@
+### 1.2.2 “Luna 2, impact”
+* Fix Sprockets 3 support by Waseem Sadiq.
+* Add Component support by Mitchel Kelonye.
+
 ### 1.2.1 “Discoverer 6, again”
 * Fix Bower config by Misha Ponizil.
 
