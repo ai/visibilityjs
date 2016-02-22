@@ -1,11 +1,11 @@
+sinon = require('sinon');
+
 window = global;
 document = {
   createElement:    function () { },
   addEventListener: function () { }
 };
 window.addEventListener = function () { };
-
-sinon = require('sinon');
 
 Visibility = require('../')
 

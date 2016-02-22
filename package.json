@@ -10,13 +10,13 @@
     "url": "https://github.com/ai/visibilityjs.git"
   },
   "devDependencies": {
-    "coffee-script": "1.7.1",
-    "sinon-chai":    "2.5.0",
+    "coffee-script": "1.10.0",
+    "sinon-chai":    "2.8.0",
     "uglify-js":     "2.4.12",
-    "fs-extra":      "0.8.1",
-    "sinon":         "1.8.2",
-    "mocha":         "1.17.1",
-    "chai":          "1.9.0"
+    "fs-extra":      "0.26.5",
+    "sinon":         "1.17.3",
+    "mocha":         "2.4.5",
+    "chai":          "3.5.0"
   },
   "scripts": {
     "test": "mocha"
