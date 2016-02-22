@@ -2,15 +2,12 @@
 # visibility.js file.
 module VisibilityJs
 
-  # Add assets paths to standalone Sprockets environment.
-  def self.install(sprockets)
-    sprockets.append_path(Pathname(__FILE__).dirname)
-  end
-
   module Rails
     class Engine < ::Rails::Engine
-      initializer 'visibilityjs' do
-        VisibilityJs.install(::Rails.application.assets)
+      initializer 'visibilityjs' do |app|
+        root = Pathname(__FILE__).dirname.expand_path
+        
+        app.config.assets.prepend_path(root)
       end
     end
   end
