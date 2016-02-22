@@ -2,12 +2,14 @@
 # visibility.js file.
 module VisibilityJs
 
+  def self.install(sprockets)
+    sprockets.append_path(Pathname(__FILE__).dirname)
+  end
+
   module Rails
     class Engine < ::Rails::Engine
       initializer 'visibilityjs' do |app|
-        root = Pathname(__FILE__).dirname.expand_path
-        
-        app.config.assets.prepend_path(root)
+        VisibilityJs.install(app.config.assets)
       end
     end
   end
