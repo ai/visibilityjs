@@ -1,16 +1,19 @@
 # Used only for Ruby on Rails gem to tell, that gem contain `lib/assets` with
 # visibility.js file.
+
 module VisibilityJs
 
-  def self.install(sprockets)
-    sprockets.append_path(Pathname(__FILE__).dirname)
+  # Path where is the visibility.js located.
+  def self.assets_path
+    Pathname(__FILE__).dirname
   end
 
-  module Rails
-    class Engine < ::Rails::Engine
-      initializer 'visibilityjs' do |app|
-        VisibilityJs.install(app.config.assets)
-      end
-    end
+  # Add assets path to standalone Sprockets environment.
+  def self.install(sprockets)
+    sprockets.append_path(assets_path)
   end
+end
+
+if defined?(Rails)
+  require 'visibilityjs/railtie'
 end
