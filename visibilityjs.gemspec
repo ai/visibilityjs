@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
                         'lib/visibility.timers.js',
                         'lib/visibility.fallback.js',
                         'lib/visibilityjs.rb',
+                        'lib/visibilityjs/railtie.rb',
                         'LICENSE', 'README.md', 'ChangeLog.md']
   s.extra_rdoc_files = ['LICENSE', 'README.md', 'ChangeLog.md']
   s.require_path     = 'lib'
