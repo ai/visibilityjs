@@ -280,6 +280,15 @@ For Ruby on Rails you can use gem for Assets Pipeline.
    #= require visibility.core
    ```
 
+### CDN
+
+If you don’t use any assets packaging manager use [cdnjs](http://cdnjs.com/).
+Add to your site:
+
+```html
+<script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/1.2.3/visibility.min.js"></script>
+```
+
 ### Other
 
 If you need just a files, you can take already minified packages from
