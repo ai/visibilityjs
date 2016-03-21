@@ -251,6 +251,14 @@ Visibility.js is available by Bower package manager:
 bower install --save visibilityjs
 ```
 
+### NPM
+
+Available by [NPM](https://www.npmjs.com/package/visibilityjs):
+
+```
+npm install --save visibilityjs
+```
+
 ### Ruby on Rails
 
 For Ruby on Rails you can use gem for Assets Pipeline.
