@@ -12,10 +12,10 @@
   "devDependencies": {
     "coffee-script": "1.10.0",
     "sinon-chai":    "2.8.0",
-    "uglify-js":     "2.6.2",
-    "fs-extra":      "0.26.7",
-    "sinon":         "1.17.3",
-    "mocha":         "2.4.5",
+    "uglify-js":     "2.7.3",
+    "fs-extra":      "0.30.0",
+    "sinon":         "1.17.5",
+    "mocha":         "3.0.2",
     "chai":          "3.5.0"
   },
   "scripts": {
