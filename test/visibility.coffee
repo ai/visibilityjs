@@ -375,6 +375,39 @@ describe 'Visibility', ->
         @clock.tick(1000)
         callback.should.have.been.calledThrice
 
+      it 'checks race condition on visibility change and .stop() call in callback', ->
+        window.setInterval.restore()
+        sinon.spy(Visibility, 'stop')
+
+        callback = sinon.spy(->
+          Visibility.stop(timer) if callback.callCount == 2)
+
+        webkitSet('visible')
+        timer = Visibility.every(1000, callback)
+        callback.should.have.not.been.called
+
+        @clock.tick(1100)
+        callback.should.have.been.calledOnce
+
+        webkitSet('hidden')
+        Visibility._change()
+        callback.should.have.been.calledOnce
+
+        @clock.tick(1100)
+        callback.should.have.been.calledOnce
+
+        Visibility.stop.should.have.not.been.called
+        webkitSet('visible')
+        Visibility._change()
+        callback.should.have.been.calledTwice
+        Visibility.stop.should.have.been.calledOnce
+
+        @clock.tick(1100)
+        callback.should.have.been.calledTwice
+
+        @clock.tick(1100)
+        callback.should.have.been.calledTwice
+
     describe '._wasHidden', ->
 
       it 'remembers if previous state is `visible`', ->
