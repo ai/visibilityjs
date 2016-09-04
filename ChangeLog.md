@@ -1,3 +1,6 @@
+### 1.2.4 “Luna 3, Dark side of the Moon”
+* Fix race condition by Mikhail Vazhnov.
+
 ### 1.2.3 “Vanguard 3, 300 years”
 * Fix Rails support by @dimko.
 

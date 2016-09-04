@@ -294,7 +294,7 @@ If you don’t use any assets packaging manager use [cdnjs](http://cdnjs.com/).
 Add to your site:
 
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/1.2.3/visibility.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/1.2.4/visibility.min.js"></script>
 ```
 
 ### Other
