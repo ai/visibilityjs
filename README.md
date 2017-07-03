@@ -28,6 +28,10 @@ hack has an issue: when browser just lose focus but still visible for user, its 
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
 [natively supported]:  http://caniuse.com/pagevisibility
 
+## Demo
+
+https://ai.github.io/visibilityjs/
+
 ## Translations
 
 Документация на русском:
