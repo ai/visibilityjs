@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title></title>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/1.2.4/visibility.min.js"></script>
+    </head>
+    <body>
+        <h1>Visibility.js test</h1>
+        <p>Page Visibility API <strong id="support"></strong>.</p>
+        <p>Page is visible for <strong id="counter"></strong> sec.</p>
+        <script>
+            var support = document.getElementById('support');
+            if ( Visibility.isSupported() ) {
+                support.innerHTML = 'is supported';
+            } else {
+                support.innerHTML = 'isn’t supported';
+            }
+
+            document.title = Visibility.state();
+            Visibility.change(function (e, state) {
+                document.title = state;
+            });
+
+            var sec = 1;
+            var counter = document.getElementById('counter');
+            Visibility.every(1000, function () {
+                counter.innerHTML = sec++;
+            });
+
+            Visibility.every(5000, function () {
+                counter.style.color = 'green';
+                setTimeout(function () {
+                    counter.style.color = 'black';
+                }, 1000);
+            });
+        </script>
+    </body>
+</html>
