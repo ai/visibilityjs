@@ -1,3 +1,6 @@
+### 1.2.5 “Explorer 7, solar x-ray”
+* Add TypeScript definitions by Joel Hernández.
+
 ### 1.2.4 “Luna 3, Dark side of the Moon”
 * Fix race condition by Mikhail Vazhnov.
 
