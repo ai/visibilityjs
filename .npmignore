@@ -4,6 +4,7 @@
 node_modules
 pkg
 logo.svg
+yarn.lock
 
 test
 .travis.yml
