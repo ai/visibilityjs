@@ -18,7 +18,7 @@ describe 'Visibility', ->
     Visibility._callbacks = []
     Visibility._doc = document = { addEventListener: -> }
 
-    sinon.stub window, 'setInterval', -> 102
+    sinon.stub(window, 'setInterval').returns(102)
 
   afterEach ->
     delete window.jQuery
@@ -32,7 +32,7 @@ describe 'Visibility', ->
     describe '.onVisible()', ->
 
       it 'calls onVisible immediately when API is not supported', ->
-        sinon.stub Visibility, 'isSupported', -> false
+        sinon.stub(Visibility, 'isSupported').returns(false)
         sinon.spy(Visibility, '_listen')
         callback = sinon.spy()
 
@@ -74,7 +74,7 @@ describe 'Visibility', ->
     describe '.change()', ->
 
       it 'returns false on `change` call when API is not supported', ->
-        sinon.stub Visibility, 'isSupported', -> false
+        sinon.stub(Visibility, 'isSupported').returns(false)
         sinon.spy(Visibility, '_listen')
         callback = sinon.spy()
 
@@ -122,7 +122,7 @@ describe 'Visibility', ->
     describe '.afterPrerendering()', ->
 
       it 'runs afterPrerendering callback immediately without API', ->
-        sinon.stub Visibility, 'isSupported', -> false
+        sinon.stub(Visibility, 'isSupported').returns(false)
         sinon.stub(Visibility, '_listen')
         callback = sinon.spy()
 
@@ -263,7 +263,8 @@ describe 'Visibility', ->
       it 'stores last called time', ->
         runner = null
         window.setInterval.restore()
-        sinon.stub window, 'setInterval', (callback, ms) -> runner = callback
+        sinon.stub(window, 'setInterval')
+          .callsFake (callback, ms) -> runner = callback
 
         now = new Date()
         id  = Visibility.every(1, 10, ->)
@@ -282,7 +283,7 @@ describe 'Visibility', ->
         lastID = 100
 
         window.setInterval.restore()
-        sinon.stub window, 'setInterval', -> lastID += 1
+        sinon.stub(window, 'setInterval').callsFake -> lastID += 1
 
         callback1 = sinon.spy()
         callback2 = sinon.spy()
