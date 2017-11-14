@@ -21,9 +21,16 @@
     "mocha": "4.0.1",
     "sinon": "4.1.2",
     "sinon-chai": "2.14.0",
+    "size-limit": "^0.13.1",
     "uglify-js": "^3.1.9"
   },
+  "size-limit": [
+    {
+      "path": "index.js",
+      "limit": "780 B"
+    }
+  ],
   "scripts": {
-    "test": "mocha"
+    "test": "mocha && size-limit"
   }
 }
