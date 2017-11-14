@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.2.6 “Discoverer 7, powerless”
+* Fix type definitions for TypeScript 2.6 by @marayfirth.
+
 ## 1.2.5 “Explorer 7, solar x-ray”
 * Add TypeScript definitions by Joel Hernández.
 
