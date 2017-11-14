@@ -1,5 +1,6 @@
 declare module 'visibilityjs' {
-    export default new Visibility();
+    const _default: Visibility;
+    export default _default;
 
     class Visibility {
         every(interval: number, callback: Function);
