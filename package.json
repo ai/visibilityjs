@@ -10,10 +10,7 @@
   ],
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ai/visibilityjs.git"
-  },
+  "repository": "ai/visibilityjs",
   "devDependencies": {
     "chai": "4.1.2",
     "coffee-script": "^1.12.7",
