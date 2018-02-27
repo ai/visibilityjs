@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.2.7 “Discoverer 8, hard”
+* Fix type definitions by @dpoetzsch.
+
 ## 1.2.6 “Discoverer 7, powerless”
 * Fix type definitions for TypeScript 2.6 by @marayfirth.
 
