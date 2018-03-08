@@ -88,7 +88,7 @@ mocha =
               'node_modules/sinon-chai/lib/sinon-chai.js']
 
 task 'server', 'Run test server', ->
-  coffee = require('coffee-script')
+  coffee = require('coffeescript')
 
   server = http.createServer (req, res) ->
     pathname = url.parse(req.url).pathname

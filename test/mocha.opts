@@ -1,4 +1,4 @@
 --reporter spec
 --require ./test/mocha
---require coffee-script/register
+--require coffeescript/register
 test/*.coffee
