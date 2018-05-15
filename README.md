@@ -95,8 +95,6 @@ If the browser does not support the Page Visibility API, `Visibility.every` will
 fall back to `setInterval`, and `callback` will be run every `interval` ms for
 both the hidden and visible pages.
 
-
-
 ## Initializers
 
 Another common use case is when you need to execute some actions upon a switch to
