@@ -13,13 +13,13 @@
   "repository": "ai/visibilityjs",
   "devDependencies": {
     "chai": "4.1.2",
-    "coffeescript": "^2.2.2",
-    "fs-extra": "5.0.0",
-    "mocha": "5.0.4",
-    "sinon": "4.4.2",
+    "coffeescript": "^2.3.0",
+    "fs-extra": "6.0.1",
+    "mocha": "5.1.1",
+    "sinon": "5.0.7",
     "sinon-chai": "3.0.0",
-    "size-limit": "^0.16.1",
-    "uglify-js": "^3.3.13"
+    "size-limit": "^0.18.0",
+    "uglify-js": "^3.3.25"
   },
   "size-limit": [
     {
