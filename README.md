@@ -72,6 +72,11 @@ Visibility.every(minute, 5 * minute, function () {
 });
 ```
 
+When the page becomes visible, if the callback has not been called in longer than 
+the visible interval, it will be called immediately. In the example above, if you 
+hid the page for 9 minutes, `checkForEmail` will get called once while the page is hidden,
+and immediately when it is made visible.
+
 `Visibility.every` returns a timer identifier, much like the `setInterval`
 function. However, it cannot be passed to `clearInterval`, and you should use
 `Visibility.stop(id)` to stop the timer.
