@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.2.8 “Pioneer 5, solar wind”
+* Fix TypeScript module declaration by @maciejmrozinski.
+* Fix headless Chrome support by @runspired.
+* Reduce project size.
+
 ## 1.2.7 “Discoverer 8, hard”
 * Fix type definitions by @dpoetzsch.
 
