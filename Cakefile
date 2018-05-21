@@ -125,24 +125,3 @@ task 'clean', 'Remove all generated files', ->
   fs.removeSync('pkg/') if fs.existsSync('pkg/')
   for file in fs.readdirSync('./')
     fs.removeSync(file) if file.match(/\.gem$/)
-
-task 'min', 'Create minimized version of library', ->
-  uglify = require('uglify-js')
-
-  invoke('clean')
-  fs.mkdirsSync('pkg/')
-
-  for file in project.libs()
-    continue if file == 'visibility.js'
-    name = file.replace(/^lib\//, '').replace(/\.js$/, '')
-    fs.copySync(file, "pkg/#{name}-#{project.version()}.min.js")
-
-  core   = fs.readFileSync('lib/visibility.core.js').toString()
-  timers = fs.readFileSync('lib/visibility.timers.js').toString()
-  fs.writeFileSync("pkg/visibility-#{project.version()}.min.js", core + timers)
-
-  packages = fs.readdirSync('pkg/').filter( (i) -> i.match(/\.js$/) )
-  for file in packages
-    continue unless file.match(/\.js$/)
-    min = uglify.minify('pkg/' + file)
-    fs.writeFileSync('pkg/' + file, min.code)
