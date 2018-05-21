@@ -278,12 +278,5 @@ npm install --save visibilityjs
    npm test
    ```
 
-4. Run test server, to check code in real browsers:
-
-   ```sh
-   ./node_modules/.bin/cake server
-   ```
-
-5. Open tests in browser: [localhost:8000](http://localhost:8000).
-6. Also you can see real usage example in integration test
+4. Also you can see real usage example in integration test
    `test/integration.html`.
