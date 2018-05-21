@@ -72,8 +72,8 @@ Visibility.every(minute, 5 * minute, function () {
 });
 ```
 
-When the page becomes visible, if the callback has not been called in longer than 
-the visible interval, it will be called immediately. In the example above, if you 
+When the page becomes visible, if the callback has not been called in longer than
+the visible interval, it will be called immediately. In the example above, if you
 hid the page for 9 minutes, `checkForEmail` will get called once while the page is hidden,
 and immediately when it is made visible.
 
@@ -238,9 +238,7 @@ notification.onOutOfDate(function () {
 });
 ```
 
-## Installing
-
-### Packages
+## Packages
 
 Visibility.js is shipped with 4 files:
 
@@ -252,64 +250,13 @@ Visibility.js is shipped with 4 files:
   It use document `focus`/`blur` events, so document become to be hidden,
   when browser just lose focus, but still visible for user.
 
-### Bower
-
-Visibility.js is available by Bower package manager:
-
-```
-bower install --save visibilityjs
-```
-
-### NPM
+## Installing
 
 Available by [NPM](https://www.npmjs.com/package/visibilityjs):
 
 ```
 npm install --save visibilityjs
 ```
-
-### Ruby on Rails
-
-For Ruby on Rails you can use gem for Assets Pipeline.
-
-1. Add `visibilityjs` gem to `Gemfile`:
-
-   ```ruby
-   gem "visibilityjs"
-   ```
-
-2. Install gems:
-
-   ```sh
-   bundle install
-   ```
-
-3. Include Visibility.js in your `application.js.coffee`:
-
-   ```coffee
-   #= require visibility
-   ```
-
-   If you willn’t use `every` method, you can reduce library size by including
-   only core module:
-
-   ```coffee
-   #= require visibility.core
-   ```
-
-### CDN
-
-If you don’t use any assets packaging manager use [cdnjs](http://cdnjs.com/).
-Add to your site:
-
-```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/visibility.js/1.2.4/visibility.min.js"></script>
-```
-
-### Other
-
-If you need just a files, you can take already minified packages from
-[github.com/ai/visibilityjs/releases](https://github.com/ai/visibilityjs/releases).
 
 ## Contributing
 
