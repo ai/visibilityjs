@@ -21,12 +21,6 @@
     "size-limit": "^0.18.1",
     "uglify-js": "^3.3.26"
   },
-  "size-limit": [
-    {
-      "path": "index.js",
-      "limit": "771 B"
-    }
-  ],
   "scripts": {
     "test": "mocha && size-limit"
   }

@@ -5,6 +5,7 @@ yarn.lock
 
 test
 .travis.yml
+.size-limit
 
 Cakefile
 
