@@ -1,6 +1,6 @@
 {
   "name": "visibilityjs",
-  "version": "1.2.8",
+  "version": "2.0.0",
   "description": "Wrapper for the Page Visibility API",
   "keywords": [
     "page visibility api",

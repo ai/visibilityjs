@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.0 “TIROS-1, clouds”
+* Remove Bower support.
+* Remove Sprockets support.
+* Remove Component support.
+
 ## 1.2.8 “Pioneer 5, solar wind”
 * Fix TypeScript module declaration by @maciejmrozinski.
 * Fix headless Chrome support by @runspired.
