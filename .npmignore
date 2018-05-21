@@ -6,11 +6,3 @@ yarn.lock
 test
 .travis.yml
 .size-limit
-
-Cakefile
-
-*.rb
-lib/visibility.js
-visibilityjs.gemspec
-
-bower.json
