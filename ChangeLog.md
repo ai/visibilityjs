@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.1 “Transit 1B, navigation”
+* Fix type definitions by @michaelgmcd.
+
 ## 2.0 “TIROS-1, clouds”
 * Remove Bower support.
 * Remove Sprockets support.
