@@ -6,7 +6,7 @@ declare module 'visibilityjs' {
     export function isSupported(): boolean;
     export function state(): string;
     export function hidden(): boolean;
-    export function unbind(id: number);
+    export function unbind(id: number): void;
     export function change(listener: VisiblityChangeListener): number|boolean;
     export function stop(id: number): boolean;
 
