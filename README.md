@@ -1,6 +1,6 @@
 # Visibility.js [![Build Status](https://travis-ci.org/ai/visibilityjs.svg)](https://travis-ci.org/ai/visibilityjs)
 
-<img align="right" width="100" src="http://ai.github.io/visibilityjs/logo.svg" title="Visibility.js logo by Eugenia Tuchapets">
+<img align="right" width="100" src="./logo.svg" title="Visibility.js logo by Eugenia Tuchapets">
 
 Visibility.js is a wrapper for the [Page Visibility API]. It hides vendor prefixes and adds high level functions.
 
@@ -27,10 +27,6 @@ hack has an issue: when browser just lose focus but still visible for user, its 
 [Page Visibility API]: http://www.w3.org/TR/page-visibility/
 [prerendering]:        http://code.google.com/chrome/whitepapers/prerender.html
 [natively supported]:  http://caniuse.com/pagevisibility
-
-## Demo
-
-https://ai.github.io/visibilityjs/
 
 ## Translations
 
