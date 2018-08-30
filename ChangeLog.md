@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.2 “Discoverer 11, attitude control”
+* Fix support detection (by xiaoping).
+
 ## 2.0.1 “Transit 1B, navigation”
 * Fix type definitions by @michaelgmcd.
 
